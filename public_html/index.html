@@ -11,18 +11,20 @@
     <!-- Bootstrap + JohnDoe main styles -->
 	<link rel="stylesheet" href="assets/css/johndoe.css">
     <link rel="stylesheet" href="assets/css/githubprojects.css" />
+    <link rel="stylesheet" href="assets/css/print.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/devicon.min.css">
     <script src="assets/js/githubprojects.js" defer></script>
 </head>
 <body data-spy="scroll" data-target=".navbar" data-offset="40" id="home" >
         <header class="header">
         <div class="container">
-            <ul class="social-icons pt-3">
+            <ul class="social-icons pt-3 print-hide">
                 <li class="social-item"><a class="social-link text-light" href="https://www.linkedin.com/in/alessandro-discalzi/" target="_blank"><i class="ti-linkedin" aria-hidden="true"></i></a></li>
                 <li class="social-item"><a class="social-link text-light" href="https://github.com/wuxyel123/" target="_blank"><i class="ti-github" aria-hidden="true"></i></a></li>
                 <li class="social-item"><a class="social-link text-light" href="https://www.instagram.com/alessandro_discalzi/" target="_blank"><i class="ti-instagram" aria-hidden="true"></i></a></li>
             </ul>  
             <div class="header-content">
+                <img src="assets/imgs/avatar.jpg" class="print-avatar" alt="Avatar">
                 <h4 class="header-subtitle" >Hello, I am</h4>
                 <h1 class="header-title">Alessandro Discalzi</h1>
                 <h6 class="header-mono" >Backend Developer</h6>
@@ -66,6 +68,14 @@
         </div>
     </nav>
     <div class="container ">
+        <div class="print-header">
+            <img src="assets/imgs/avatar.jpg" class="print-avatar" alt="Avatar">
+            <div class="print-header-content">
+                <h1>Alessandro Discalzi</h1>
+                <h2>Backend Developer</h2>
+            </div>
+        </div>
+
         <div id="about" class="row about-section">
             <div class="col-md-6 col-lg-4 about-card">
                 <h3 class="font-weight-light">Personal Info</h3>
@@ -75,6 +85,7 @@
                     <li><span>Email</span> : alessandrodiscalzi98@gmail.com</li>
                     <li><span>Phone</span> : + (39) 3891173437</li>
                     <li><span>Address</span> :  Via Vallasè, 17/A, Pozzonovo (PD), Italy</li>
+                    <li><span>Nationality</span> : Italian </li>
                 </ul>
                 <ul class="social-icons pt-3">
                     <li class="social-item"><a class="social-link" href="https://www.linkedin.com/in/alessandro-discalzi/" target="_blank"><i class="ti-linkedin" aria-hidden="true"></i></a></li>
@@ -189,7 +200,11 @@
                             </p>
                          </div>
                     </div>
-                    <div class="card">
+                    <div class="print-languages">
+                        <h6 class="title text-danger">Languages</h6>
+                        <p class="subtitle">Italian (Native), English (B2), French (A1)</p>
+                    </div>
+                    <div class="card print-hide">
                        <div class="card-header">
                             <div class="pull-left">
                                 <h4 class="mt-2">Languages</h4>
@@ -222,7 +237,8 @@
         <div class="container">
             <div class="col-lg-12">
                 <h2 class="mb-5"><span class="text-danger">My</span> Projects</h2>
-                <div class="card">
+                <p class="print-projects">Take a look of all my projects on <a href="https://github.com/wuxyel123/"> github.com/wuxyel123</a> or <a href="http://www.alessandrodiscalzi.com">www.alessandrodiscalzi.com</a></p>
+                <div class="card print-hide">
                         <section class="repos">
                             <input type="text" class="filter-repos hide" placeholder="Search Projects" />
                             <ul class="repo-list"></ul>

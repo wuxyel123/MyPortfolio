@@ -78,7 +78,6 @@ const displayRepos = (repos) => {
 
         const langUrl = `${userHome}?tab=repositories&q=&language=${repo.language}`
         const starsUrl = `${userHome}/${repo.name}/stargazers`
-        const forksUrl = `${userHome}/${repo.name}/network/members`
 
         let listItem = document.createElement('li');
         listItem.classList.add('repo');
