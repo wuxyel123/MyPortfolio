@@ -41,10 +41,9 @@ jobs:
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
         server-dir: /www.alessandrodiscalzi.com/
-        exclude: |
-          **/.git*
-          **/.git*/**
-          **/node_modules/**
-          **/gulpfile.js
-          **/OriginalTemplate.zip
-          **/package.json
+        exclude:
+        - '**/.git*'
+          '**/.git*/**'
+          '**/node_modules/**'
+          'OriginalTemplate.zip'
+          'DS_Store*'
