@@ -42,8 +42,8 @@ jobs:
         password: ${{ secrets.FTP_PASSWORD }}
         server-dir: /www.alessandrodiscalzi.com/
         exclude:
-        - '**/.git*'
-          '**/.git*/**'
-          '**/node_modules/**'
-          'OriginalTemplate.zip'
-          'DS_Store*'
+          - '**/.git*'
+          - '**/.git*/**'
+          - '**/node_modules/**'
+          - 'OriginalTemplate.zip'
+          - 'DS_Store*'
