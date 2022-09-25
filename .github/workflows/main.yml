@@ -6,8 +6,9 @@ on:
       - '**/.git*'
       - '**/.git*/**'
       - '**/node_modules/**'
-      - 'OriginalTemplate.zip'
-      - 'DS_Store*'
+      - '**/OriginalTemplate.zip'
+      - '**/.DS_Store*'
+      - '**/.README.txt'
     branches: 
       - master
       - main
@@ -17,8 +18,9 @@ on:
       - '**/.git*'
       - '**/.git*/**'
       - '**/node_modules/**'
-      - 'OriginalTemplate.zip'
-      - 'DS_Store*'
+      - '**/OriginalTemplate.zip'
+      - '**/.DS_Store*'
+      - '**/.README.txt'
     branches: 
       - master
       - main
