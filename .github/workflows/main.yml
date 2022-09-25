@@ -9,7 +9,6 @@ on:
     paths-ignore:
       - '**/.git*'
       - '**/.git*/**'
-      - '**/node_modules/**'
       - '**/OriginalTemplate.zip'
       - '**/.DS_Store'
       - '**/.README.txt'
@@ -20,7 +19,6 @@ on:
     paths-ignore:
       - '**/.git*'
       - '**/.git*/**'
-      - '**/node_modules/**'
       - '**/OriginalTemplate.zip'
       - '**/.DS_Store'
       - '**/.README.txt'
