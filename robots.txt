@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /index.html
+Disallow: /assets/
+Disallow: /.ftp-deploy-sync-state.json
+Disallow: /__aruba__php__test__.php
+Disallow: /favicon.png
+Disallow: /LICENSE
+
+Sitemap: http://www.alessandrodiscalzi.com/sitemap.xml
