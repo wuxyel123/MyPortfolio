@@ -2,11 +2,23 @@ name: 🚀 Automatic MyPortfolio Deploy on pull_request or commits
 
 on:
   pull_request:
+    paths-ignore:
+      - '**/.git*'
+      - '**/.git*/**'
+      - '**/node_modules/**'
+      - 'OriginalTemplate.zip'
+      - 'DS_Store*'
     branches: 
       - master
       - main
     types: [closed]
   push:
+    paths-ignore:
+      - '**/.git*'
+      - '**/.git*/**'
+      - '**/node_modules/**'
+      - 'OriginalTemplate.zip'
+      - 'DS_Store*'
     branches: 
       - master
       - main
@@ -41,9 +53,4 @@ jobs:
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
         server-dir: /www.alessandrodiscalzi.com/
-        exclude:
-          - '**/.git*'
-          - '**/.git*/**'
-          - '**/node_modules/**'
-          - 'OriginalTemplate.zip'
-          - 'DS_Store*'
+          
