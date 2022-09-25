@@ -7,7 +7,7 @@ on:
       - '**/.git*/**'
       - '**/node_modules/**'
       - '**/OriginalTemplate.zip'
-      - '**/.DS_Store*'
+      - '**/.DS_Store'
       - '**/.README.txt'
     branches: 
       - master
@@ -19,7 +19,7 @@ on:
       - '**/.git*/**'
       - '**/node_modules/**'
       - '**/OriginalTemplate.zip'
-      - '**/.DS_Store*'
+      - '**/.DS_Store'
       - '**/.README.txt'
     branches: 
       - master
