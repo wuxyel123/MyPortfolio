@@ -5,7 +5,7 @@ const repoList = document.querySelector('.repo-list');
 const reposSection = document.querySelector('.repos');
 const filterInput = document.querySelector('.filter-repos');
 
-// get information from github profile
+/** get information from github profile
 const getProfile = async () => {
     const res = await fetch(
         `https://api.github.com/users/${username}`
@@ -20,8 +20,8 @@ const getProfile = async () => {
     displayProfile(profile);
 };
 getProfile();
-
-// display infomation from github profile
+*/
+/**  display infomation from github profile
 const displayProfile = (profile) => {
     const userInfo = document.querySelector('.user-info');
     userInfo.innerHTML = `
@@ -42,6 +42,7 @@ const displayProfile = (profile) => {
         </div>
     `;
 };
+*/
 
 // get list of user's public repos
 const getRepos = async () => {
