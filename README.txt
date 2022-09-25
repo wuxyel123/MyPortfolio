@@ -1,8 +1,10 @@
-JohnDoe Free Bootstrap landing page for personal and commercial use. Designed with ♥️ and creativity by Devcrud.com 
-
-Product Page: https://wwww.devcrud.com/
+Personal website to show CV and portfolio
 
 Credits:
+
+	Template: JohnDoe Free Bootstrap landing page for personal and commercial use. Designed with ♥️ and creativity by Devcrud.com 
+
+	Product Page: https://wwww.devcrud.com/
 
     Demo Images:
         Unsplash:       	(https://www.unsplash.com)
