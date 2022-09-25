@@ -2,6 +2,10 @@ name: 🚀 Automatic MyPortfolio Deploy on pull_request or commits
 
 on:
   pull_request:
+    branches: 
+      - master
+      - main
+    types: [closed]
     paths-ignore:
       - '**/.git*'
       - '**/.git*/**'
@@ -9,11 +13,11 @@ on:
       - '**/OriginalTemplate.zip'
       - '**/.DS_Store'
       - '**/.README.txt'
-    branches: 
-      - master
-      - main
-    types: [closed]
   push:
+    branches: 
+      - master
+      - main
+    types: [closed]
     paths-ignore:
       - '**/.git*'
       - '**/.git*/**'
@@ -21,10 +25,6 @@ on:
       - '**/OriginalTemplate.zip'
       - '**/.DS_Store'
       - '**/.README.txt'
-    branches: 
-      - master
-      - main
-    types: [closed]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
