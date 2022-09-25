@@ -21,8 +21,18 @@ jobs:
     name: 🎉 Deploy
     runs-on: ubuntu-latest
     steps:
-    - name: 🚚 Get latest code
-      uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+      
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v30
+
+      - name: List all changed files
+        run: |
+          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+            echo "$file was changed"
+          done
+
 
     - name: 📂 Sync files
       uses: SamKirkland/FTP-Deploy-Action@4.1.0
@@ -35,6 +45,6 @@ jobs:
           **/.git*
           **/.git*/**
           **/node_modules/**
-          gulpfile.js
-          OriginalTemplate.zip
-          package.json
+          **/gulpfile.js
+          **/OriginalTemplate.zip
+          **/package.json
