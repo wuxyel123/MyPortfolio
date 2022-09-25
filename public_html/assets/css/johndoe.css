@@ -11569,6 +11569,10 @@
     .header .header-content .header-mono {
       letter-spacing: 2px;
     }
+
+    .header-title {
+      font-size: 2em!important;
+    }
   }
   
   .header-title {
