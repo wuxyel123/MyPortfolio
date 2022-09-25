@@ -6,11 +6,6 @@ on:
       - master
       - main
     types: [closed]
-  commits:
-    branches: 
-      - master
-      - main
-    types: [closed]
   push:
     branches: 
       - master
