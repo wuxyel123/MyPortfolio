@@ -1,3 +1,4 @@
+Sitemap: https://www.alessandrodiscalzi.com/sitemap.xml
 User-agent: *
 Allow: /index.html
 Allow: /favicon.png
@@ -11,5 +12,3 @@ Allow: /assets/vendors/jquery/
 Disallow: /.ftp-deploy-sync-state.json
 Disallow: /__aruba__php__test__.php
 Disallow: /LICENSE
-
-Sitemap: http://www.alessandrodiscalzi.com/sitemap.xml
