@@ -1,6 +1,7 @@
 Sitemap: https://www.alessandrodiscalzi.com/sitemap.xml
 User-agent: *
 Allow: /index.html
+Allow: /sitemap.xml
 Allow: /favicon.png
 Allow: /assets/
 Allow: /assets/css/
