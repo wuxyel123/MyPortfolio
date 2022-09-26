@@ -1,6 +1,12 @@
 User-agent: *
 Allow: /index.html
 Allow: /assets/
+Allow: /assets/css/
+Allow: /assets/imgs/
+Allow: /assets/js/
+Allow: /assets/vendors/
+Allow: /assets/vendors/bootstrap/
+Allow: /assets/vendors/jquery/
 Disallow: /.ftp-deploy-sync-state.json
 Disallow: /__aruba__php__test__.php
 Disallow: /favicon.png
