@@ -101,7 +101,7 @@ const displayRepos = (repos) => {
             <span>${devicons["Git"]} ${repo.forks_count}</span></a>`
         }
 
-        if (repo.homepage && repo.homepage !== "") {
+        if (repo.homepage && repo.homepage !== "" && repo.homepage !== "http://www.alessandrodiscalzi.com") {
             listItem.innerHTML += `<br /> <br />
             <a class="btn btn-outline-danger target="_blank"" href=${repo.html_url}>Code ${devicons["Github"]}</a>
             <a class="btn btn-outline-danger target="_blank"" href=${repo.homepage}>Live ${devicons["Chrome"]}</a> <br />`;
