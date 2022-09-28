@@ -10,6 +10,7 @@ on:
       - '**/.git*'
       - '**/.git*/**'
       - '**/OriginalTemplate.zip'
+      - '**/.gitignore'
       - '**/.DS_Store'
       - '**/.README.txt'
   push:
@@ -20,6 +21,7 @@ on:
       - '**/.git*'
       - '**/.git*/**'
       - '**/OriginalTemplate.zip'
+      - '**/.gitignore'
       - '**/.DS_Store'
       - '**/.README.txt'
 
