@@ -11614,6 +11614,10 @@
   .section.bg-custom-gray {
     background: rgba(144, 148, 151, 0.15);
   }
+
+  .small-bottom-padding{
+    padding-bottom: 0px;
+  }
   
   .about-section {
     border-bottom: 1px solid #dee2e6;
