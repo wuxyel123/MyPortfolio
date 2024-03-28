@@ -11618,6 +11618,10 @@
   .small-bottom-padding{
     padding-bottom: 0px;
   }
+
+  .small-top-padding{
+    padding-top: 0px;
+  }
   
   .about-section {
     border-bottom: 1px solid #dee2e6;
