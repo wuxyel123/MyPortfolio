@@ -1,19 +1,36 @@
-Personal website to show CV and portfolio
+Personal website — CV and portfolio for Alessandro Discalzi
+https://www.alessandrodiscalzi.com/
 
-Credits:
+Structure
+---------
+    index.html              Single page: hero, about, resume, projects, contact.
+    assets/css/main.css     Screen styles. Hand-written, no framework.
+    assets/css/print.css    Printed / PDF CV (media="print"), 2 pages, links
+                            rendered with their destination visible.
+    assets/js/main.js       Theme toggle, mobile nav, scrollspy, dynamic dates,
+                            lazy-loaded contact form.
+    assets/js/githubprojects.js
+                            Fetches public repos from the GitHub REST API.
 
-	Template: JohnDoe Free Bootstrap landing page for personal and commercial use. Designed with ♥️ and creativity by Devcrud.com 
+No build step, no dependencies. Open index.html, or serve the folder:
 
-	Product Page: https://wwww.devcrud.com/
+    python3 -m http.server 8765
 
-    Demo Images:
-        Unsplash:       	(https://www.unsplash.com)
+Deployment
+----------
+.github/workflows/main.yml FTP-syncs the repository to the web host on every
+push to main. Anything committed here becomes publicly downloadable, so keep
+private material out of the repo (see .gitignore).
 
-    Icons:
-		Themify Icons: 		(https://themify.me/themify-icons)
+Content that updates itself
+---------------------------
+    Footer year                 [data-year]
+    Years of experience         [data-years-since="YYYY-MM"] in the About text
+    Project list                pulled live from GitHub
 
-	Other:
-		JQuery: 			(https://www.jquery.com)
-		Bootstrap: 			(https://www.getbootstrap.com)
-		Bootstrap Affix: 	(http://getbootstrap.com/javascript/#affix)  
-		Isotope: 			(https://isotope.metafizzy.co/) 
+Credits
+-------
+    Original template: JohnDoe by DevCRUD (https://www.devcrud.com/) — replaced
+    in 2026 by the hand-written stylesheet, but the site's structure grew out
+    of it.
+    GitHub project list: based on https://github.com/2KAbhishek/projects

@@ -1,1 +1,13 @@
-Alessandro Discalzi CV and portfolio website. It contains my education, my expertise, my contact informations and my projects on GitHub
+/* TEAM */
+    Developer: Alessandro Discalzi
+    Site: https://www.alessandrodiscalzi.com/
+    GitHub: @wuxyel123
+    Location: Padua, Veneto, Italy
+
+/* SITE */
+    Standards: HTML5, CSS3
+    Components: None — hand-written CSS and vanilla JavaScript
+    Software: Visual Studio Code
+
+    Personal CV and portfolio: education, experience, skills, contact details
+    and my public projects on GitHub.

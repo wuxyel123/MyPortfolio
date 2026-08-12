@@ -1,190 +1,165 @@
-const username = 'wuxyel123';
-const maxPages = 1;
-const hideForks = false;
-const repoList = document.querySelector('.repo-list');
-const reposSection = document.querySelector('.repos');
-const filterInput = document.querySelector('.filter-repos');
+/* Public GitHub repositories, fetched at runtime and rendered into .repo-list.
+   Originally based on 2KAbhishek/projects, rewritten for the current markup:
+   no devicon dependency, text is inserted as text (not HTML), and API
+   failures/rate limits degrade to a readable message instead of a blank list. */
+(function () {
+    'use strict';
 
-/** get information from github profile
-const getProfile = async () => {
-    const res = await fetch(
-        `https://api.github.com/users/${username}`
-        // {
-        //     headers: {
-        //         Accept: 'application/vnd.github+json',
-        //         Authorization: 'token your-personal-access-token-here'
-        //     }
-        // }
-    );
-    const profile = await res.json();
-    displayProfile(profile);
-};
-getProfile();
-*/
-/**  display infomation from github profile
-const displayProfile = (profile) => {
-    const userInfo = document.querySelector('.user-info');
-    userInfo.innerHTML = `
-        <figure>
-            <img alt="user avatar" src=${profile.avatar_url} />
-        </figure>
-        <div>
-            <h2><a href=${profile.blog}><strong>${profile.name}</strong></a></h2>
-            <p>${profile.bio}</p>
-            <p>
-                <strong>Location:</strong> ${profile.location}
-            </p>
-            <p>
-                <strong>@${profile.login} </strong>
-                Repos: ${profile.public_repos}
-                Gists: ${profile.public_gists}
-            </p>
-        </div>
-    `;
-};
-*/
+    var USERNAME   = 'wuxyel123';
+    var PER_PAGE   = 100;
+    var HIDE_FORKS = false;
 
-// get list of user's public repos
-const getRepos = async () => {
-    let repos = [];
-    let res;
-    for (let i = 1; i <= maxPages; i++) {
-        res = await fetch(
-            `https://api.github.com/users/${username}/repos?&sort=pushed&per_page=100&page=${i}`
-            // {
-            //     headers: {
-            //         Accept: 'application/vnd.github+json',
-            //         Authorization:
-            //             'token your-personal-access-token-here'
-            //     }
-            // }
-        );
-        let data = await res.json();
-        repos = repos.concat(data);
+    var list       = document.querySelector('.repo-list');
+    var filterInput = document.querySelector('.filter-repos');
+    if (!list) return;
+
+    // Accent colours for the language dot; anything unlisted falls back to grey.
+    var LANG_COLORS = {
+        Java: '#b07219', Python: '#3572a5', JavaScript: '#f1e05a',
+        TypeScript: '#3178c6', HTML: '#e34c26', CSS: '#563d7c',
+        'C++': '#f34b7d', C: '#555555', 'C#': '#178600', Shell: '#89e051',
+        Go: '#00add8', Rust: '#dea584', Ruby: '#701516', PHP: '#4f5d95',
+        Kotlin: '#a97bff', Swift: '#f05138', Dart: '#00b4ab',
+        'Jupyter Notebook': '#da5b0b', TeX: '#3d6117', Dockerfile: '#384d54',
+        Vue: '#41b883', Scala: '#c22d40', R: '#198ce7', Lua: '#000080',
+        PLpgSQL: '#336790', Makefile: '#427819', Batchfile: '#c1f12e'
+    };
+
+    function status(message) {
+        list.innerHTML = '';
+        var li = document.createElement('li');
+        li.className = 'repo-status';
+        li.textContent = message;
+        list.appendChild(li);
     }
-    repos.sort((a, b) => b.forks_count - a.forks_count);
-    repos.sort((a, b) => b.stargazers_count - a.stargazers_count);
-    displayRepos(repos);
-};
-getRepos();
 
-// display list of all user's public repos
-const displayRepos = (repos) => {
-    const userHome = `https://github.com/${username}`
-    filterInput.classList.remove('hide');
-    for (const repo of repos) {
-        if (repo.fork && hideForks) {
-            continue;
-        }
-
-        const langUrl = `${userHome}?tab=repositories&q=&language=${repo.language}`
-        const starsUrl = `${userHome}/${repo.name}/stargazers`
-
-        let listItem = document.createElement('li');
-        listItem.classList.add('repo');
-        listItem.innerHTML = `
-        <h6 class="title text-danger">${repo.name}</h6>
-            <span>${repo.description}</span> <br/><br/>`
-
-        if (repo.stargazers_count > 0) {
-            listItem.innerHTML += `<a href="${starsUrl}">
-            <span>⭐ ${repo.stargazers_count}</span></a>`
-        }
-
-        if (repo.language) {
-            listItem.innerHTML += `<a target="_blank" href="${langUrl}">
-            <span>${devicons[repo.language]}</span></a>`
-        }
-
-        if (repo.forks_count > 0) {
-            listItem.innerHTML += `<a href="${starsUrl}">
-            <span>${devicons["Git"]} ${repo.forks_count}</span></a>`
-        }
-
-        if (repo.homepage && repo.homepage !== "" && repo.homepage !== "http://www.alessandrodiscalzi.com") {
-            listItem.innerHTML += `<br /> <br />
-            <a class="btn btn-outline-danger target="_blank"" href=${repo.html_url}>Code ${devicons["Github"]}</a>
-            <a class="btn btn-outline-danger target="_blank"" href=${repo.homepage}>Live ${devicons["Chrome"]}</a> <br />`;
-        } else {
-            listItem.innerHTML += `<br /> <br />
-            <a class="btn btn-outline-danger" target="_blank" href=${repo.html_url}>View Project ${devicons["Github"]}</a><br />`;
-        }
-
-        repoList.append(listItem);
+    function icon(id) {
+        var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svg.setAttribute('class', 'ico');
+        svg.setAttribute('aria-hidden', 'true');
+        var use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+        use.setAttribute('href', '#' + id);
+        svg.appendChild(use);
+        return svg;
     }
-};
 
-// dynamic search
-filterInput.addEventListener('input', (e) => {
-    const search = e.target.value;
-    const repos = document.querySelectorAll('.repo');
-    const searchLowerText = search.toLowerCase();
-
-    for (const repo of repos) {
-        const lowerText = repo.innerText.toLowerCase();
-        if (lowerText.includes(searchLowerText)) {
-            repo.classList.remove('hide');
-        } else {
-            repo.classList.add('hide');
-        }
+    function metaItem(node, text) {
+        var span = document.createElement('span');
+        if (node) span.appendChild(node);
+        span.appendChild(document.createTextNode(text));
+        return span;
     }
-});
 
-// for programming language icons
-const devicons = {
-    Git: '<i class="devicon-git-plain" style="color: #555"></i>',
-    Github: '<i class="devicon-github-plain" style="color: #1688f0"></i>',
-    Chrome: '<i class="devicon-chrome-plain" style="color: #1688f0"></i>',
-    Assembly: '<i class="devicon-labview-plain colored"></i> Assembly',
-    'C#': '<i class="devicon-csharp-plain colored"></i> C#',
-    'C++': '<i class="devicon-cplusplus-plain colored"></i> C++',
-    C: '<i class="devicon-c-plain colored"></i> C',
-    Clojure: '<i class="devicon-clojure-plain colored"></i> C',
-    CoffeeScript:
-        '<i class="devicon-coffeescript-plain colored"></i> CoffeeScript',
-    Crystal: '<i class="devicon-crystal-plain colored"></i> Crystal',
-    CSS: '<i class="devicon-css3-plain colored"></i> CSS',
-    Dart: '<i class="devicon-dart-plain colored"></i> Dart',
-    Dockerfile: '<i class="devicon-docker-plain colored"></i> Docker',
-    Elixir: '<i class="devicon-elixir-plain colored"></i> Elixir',
-    Elm: '<i class="devicon-elm-plain colored"></i> Elm',
-    Erlang: '<i class="devicon-erlang-plain colored"></i> Erlang',
-    'F#': '<i class="devicon-fsharp-plain colored"></i> F#',
-    Go: '<i class="devicon-go-plain colored"></i> Go',
-    Groovy: '<i class="devicon-groovy-plain colored"></i> Groovy',
-    HTML: '<i class="devicon-html5-plain colored"></i> HTML',
-    Haskell: '<i class="devicon-haskell-plain colored"></i> Haskell',
-    Java: '<i class="devicon-java-plain colored" style="color: #ffca2c"></i> Java',
-    JavaScript: '<i class="devicon-javascript-plain colored"></i> JavaScript',
-    Julia: '<i class="devicon-julia-plain colored"></i> Julia',
-    'Jupyter Notebook': '<i class="devicon-jupyter-plain colored"></i> Jupyter',
-    Kotlin: '<i class="devicon-kotlin-plain colored" style="color: #796bdc"></i> Kotlin',
-    Latex: '<i class="devicon-latex-plain colored"></i> Latex',
-    TeX: '<i class="devicon-latex-plain colored"></i> Latex',
-    Lua: '<i class="devicon-lua-plain-wordmark colored" style="color: #0000d0"></i> Lua',
-    Matlab: '<i class="devicon-matlab-plain colored"></i> Matlab',
-    Nim: '<i class="devicon-nixos-plain colored" style="color: #FFC200"></i> Nim',
-    Nix: '<i class="devicon-nixos-plain colored"></i> Nix',
-    ObjectiveC: '<i class="devicon-objectivec-plain colored"></i> ObjectiveC',
-    OCaml: '<i class="devicon-ocaml-plain colored"></i> OCaml',
-    Perl: '<i class="devicon-perl-plain colored"></i> Perl',
-    PHP: '<i class="devicon-php-plain colored"></i> PHP',
-    PLSQL: '<i class="devicon-sqlite-plain colored"></i> PLSQL',
-    Processing:
-        '<i class="devicon-processing-plain colored" style="color: #0096D8"></i> Processing',
-    Python: '<i class="devicon-python-plain colored" style="color: #3472a6"></i> Python',
-    R: '<i class="devicon-r-plain colored"></i> R',
-    Ruby: '<i class="devicon-ruby-plain colored"></i> Ruby',
-    Rust: '<i class="devicon-rust-plain colored" style="color: #DEA584"></i> Rust',
-    Sass: '<i class="devicon-sass-original colored"></i> Sass',
-    Scala: '<i class="devicon-scala-plain colored"></i> Scala',
-    Shell: '<i class="devicon-bash-plain colored" style="color: #89E051"></i> Shell',
-    Solidity: '<i class="devicon-solidity-plain colored"></i> Solidity',
-    Stylus: '<i class="devicon-stylus-plain colored"></i> Stylus',
-    Svelte: '<i class="devicon-svelte-plain colored"></i> Svelte',
-    Swift: '<i class="devicon-swift-plain colored"></i> Swift',
-    Terraform: '<i class="devicon-terraform-plain colored"></i> Terraform',
-    TypeScript: '<i class="devicon-typescript-plain colored"></i> TypeScript',
-    'Vim Script': '<i class="devicon-vim-plain colored"></i> Vim Script',
-    Vue: '<i class="devicon-vuejs-plain colored"></i> Vue',
-};
+    function linkButton(href, text, variant) {
+        var a = document.createElement('a');
+        a.className = 'btn ' + variant;
+        a.href = href;
+        a.target = '_blank';
+        a.rel = 'noopener';
+        a.textContent = text;
+        return a;
+    }
+
+    function render(repos) {
+        list.innerHTML = '';
+
+        if (!repos.length) {
+            status('No public repositories to show right now.');
+            return;
+        }
+
+        repos.forEach(function (repo) {
+            var li = document.createElement('li');
+            li.className = 'repo';
+
+            var h3 = document.createElement('h3');
+            var titleLink = document.createElement('a');
+            titleLink.href = repo.html_url;
+            titleLink.target = '_blank';
+            titleLink.rel = 'noopener';
+            titleLink.textContent = repo.name;
+            h3.appendChild(titleLink);
+            li.appendChild(h3);
+
+            var desc = document.createElement('p');
+            desc.className = 'repo-desc';
+            desc.textContent = repo.description || 'No description provided.';
+            li.appendChild(desc);
+
+            var meta = document.createElement('div');
+            meta.className = 'repo-meta';
+
+            if (repo.language) {
+                var dot = document.createElement('i');
+                dot.className = 'lang-dot';
+                dot.style.background = LANG_COLORS[repo.language] || '';
+                meta.appendChild(metaItem(dot, repo.language));
+            }
+            if (repo.stargazers_count > 0) {
+                meta.appendChild(metaItem(icon('i-star'), String(repo.stargazers_count)));
+            }
+            if (repo.forks_count > 0) {
+                meta.appendChild(metaItem(icon('i-fork'), String(repo.forks_count)));
+            }
+            if (meta.childNodes.length) li.appendChild(meta);
+
+            var links = document.createElement('div');
+            links.className = 'repo-links';
+            links.appendChild(linkButton(repo.html_url, 'Code', 'btn-outline'));
+
+            // Ignore a homepage that just points back at this site.
+            var home = (repo.homepage || '').trim();
+            if (home && !/alessandrodiscalzi\.com/.test(home)) {
+                links.appendChild(linkButton(home, 'Live demo', 'btn-primary'));
+            }
+            li.appendChild(links);
+
+            list.appendChild(li);
+        });
+    }
+
+    function getRepos() {
+        status('Loading projects…');
+
+        fetch('https://api.github.com/users/' + USERNAME +
+              '/repos?sort=pushed&per_page=' + PER_PAGE)
+            .then(function (res) {
+                if (res.status === 403) throw new Error('rate-limit');
+                if (!res.ok) throw new Error('http-' + res.status);
+                return res.json();
+            })
+            .then(function (repos) {
+                if (!Array.isArray(repos)) throw new Error('bad-payload');
+
+                repos = repos.filter(function (repo) {
+                    return !(repo.fork && HIDE_FORKS) && !repo.archived;
+                });
+                // Most-noticed first, then most recently pushed.
+                repos.sort(function (a, b) {
+                    return (b.stargazers_count - a.stargazers_count)
+                        || (b.forks_count - a.forks_count)
+                        || (new Date(b.pushed_at) - new Date(a.pushed_at));
+                });
+
+                render(repos);
+                if (filterInput) filterInput.disabled = false;
+            })
+            .catch(function (err) {
+                status(err.message === 'rate-limit'
+                    ? 'GitHub’s API is rate limited right now. See the projects directly at github.com/' + USERNAME
+                    : 'Could not load projects from GitHub. See them at github.com/' + USERNAME);
+            });
+    }
+
+    if (filterInput) {
+        filterInput.disabled = true;
+        filterInput.addEventListener('input', function (e) {
+            var query = e.target.value.toLowerCase();
+            Array.prototype.forEach.call(list.querySelectorAll('.repo'), function (repo) {
+                repo.classList.toggle('is-hidden', repo.innerText.toLowerCase().indexOf(query) === -1);
+            });
+        });
+    }
+
+    getRepos();
+})();

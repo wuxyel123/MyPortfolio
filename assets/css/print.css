@@ -1,162 +1,358 @@
-@media screen {
-    .print-header, .print-avatar, .print-languages, .print-projects {
-        display: none;
-    }
+/* ==========================================================================
+   Printed / PDF CV
+   Loaded with media="print", so everything here is print-only by definition.
+   Target: 2 clean A4 pages, black text on white, every link's destination
+   spelled out so the URLs survive on paper as well as in the PDF.
+   ========================================================================== */
+
+@page {
+    size: A4;
+    margin: 14mm 15mm 16mm;
 }
 
-@media print{
+/* Second page onwards gets a little more headroom. */
+@page :first { margin-top: 12mm; }
 
-    .container{
-        width: 100%;
-        max-width: 100%;
-        padding: 0;
-    }
-    #contact, .print-hide, .footer, .navbar, .header, small, input, button{
-        display: none !important;
-    }
+/* ---------- Reset the screen design ---------- */
+:root,
+:root[data-theme="dark"] {
+    --bg: #fff;
+    --bg-alt: #fff;
+    --surface: #fff;
+    --surface-2: #fff;
+    --text: #000;
+    --text-muted: #333;
+    --border: #c8c8c8;
+    --accent: #a8380a;
+    --accent-strong: #a8380a;
+    --accent-soft: transparent;
+    --shadow: none;
+    --shadow-lg: none;
+    color-scheme: light;
+}
 
-    html {
-        color: black;
-        font-size: 12pt;
-    }
-    body {
-        margin: 2cm;
-        width: 90%;
-        font: 10pt Georgia, "Times New Roman", Times, serif;
-        line-height: 1.3;
-        background: #fff !important;
-        color: #000;
-    }
+html {
+    font-size: 10.5pt;
+    scroll-padding-top: 0;
+}
 
-    h1 {
-        font-size: 22pt;
-    }
-    h2 {
-        font-size: 18pt;
-    }
-    h3 {
-        font-size: 16pt;
-    }
-    h4 {
-        font-size: 14pt;
-    }
-    h5 {
-        font-size: 12pt;
-    }
-    h6 {
-        font-size: 12pt;
-        margin-top: -3pt;
-        margin-bottom: -3pt;
+body {
+    margin: 0;
+    padding: 0;
+    width: auto;
+    background: #fff !important;
+    color: #000;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 9.6pt;
+    line-height: 1.38;
+}
 
-    }
+.wrap {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+}
 
-    p{
-        font-size: 10pt;
-    }
+/* ---------- What does and does not get printed ---------- */
+.screen-only,
+.topbar,
+.hero,
+.site-footer,
+#contact,
+.skip-link,
+.repo-list,
+.projects-head,
+.projects-foot,
+.nav-toggle,
+.theme-toggle,
+.meter,
+button,
+input,
+noscript,
+svg[aria-hidden="true"]:not(.cv-keep) {
+    display: none !important;
+}
 
-    .print-header {
-        display: block;
-        margin-bottom: 20pt;
-    }
+.print-only { display: block !important; }
 
-    .print-avatar {
-        float: left;
-        display: block;
-        margin: 0 auto;
-        width: 100pt;
-        height: 100pt;
-        border-radius: 50%;
-      }
-      
-    .print-header-content {
-        float: center;
-        display: block;
-        margin-left: 120pt;
-        width: 300pt;
-        height: 100pt;
-      }
+/* The per-block headings (Experience, Education, …) already structure the CV,
+   so the big "About me" / "My Resume" banners are dead weight on paper. */
+.section-title { display: none !important; }
 
-    .text-danger {
-        color: #F39C12 !important;
-    }
+/* ---------- Header block ---------- */
+.cv-head {
+    display: flex;
+    align-items: center;
+    gap: 6mm;
+    padding-bottom: 3mm;
+    margin-bottom: 5mm;
+    border-bottom: 1.5pt solid var(--accent);
+}
 
+.cv-photo {
+    width: 26mm;
+    height: 26mm;
+    border-radius: 50%;
+    object-fit: cover;
+    flex: none;
+    /* keep the photo from washing out in browsers that strip backgrounds */
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+}
 
-    section {
-        margin-top: 1em;
-    }
+.cv-head h1 {
+    margin: 0;
+    font-size: 21pt;
+    font-weight: 700;
+    letter-spacing: -.01em;
+    line-height: 1.1;
+}
 
-    h1, h2, h3, h4, h5, h6 { page-break-after:avoid; 
-    page-break-inside:avoid }
-    img { page-break-inside:avoid; 
-    page-break-after:avoid; }
-    table, pre { page-break-inside:avoid }
-    ul, ol, dl  { page-break-before:avoid }
+.cv-role {
+    margin: .5mm 0 2mm;
+    font-size: 11.5pt;
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: .02em;
+}
 
-    a {
-        color: #E67E22;
-        text-decoration: none;
-        font-weight: bold;
-        background-color: transparent;
-      }
-      
-      a:hover {
-        color: #D35400;
-        text-decoration: none;
-      }
-      
-      .section.bg-custom-gray {
-        background: rgba(144, 148, 151, 0.15);
-      }
+.cv-contact {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1mm 4mm;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-size: 8.6pt;
+    color: #333;
+}
 
-      .about-section {
-        border-bottom: 1px solid #dee2e6;
-      }
-      
-      .about-section .about-card:last-child {
-        border-right: none;
-      }
+/* Bullet separators between contact items */
+.cv-contact li { position: relative; }
+.cv-contact li + li::before {
+    content: "•";
+    position: absolute;
+    left: -2.4mm;
+    color: #999;
+}
 
-      .info {
-        color: #6c757d;
-        font-size: 14px;
-      }
-      
-      .info li {
-        padding-bottom: 8px;
-      }
-      
-      .info span {
-        font-weight: 600;
-        font-size: 14px;
-        color: #343a40;
-      }
+/* ---------- Sections ---------- */
+.section {
+    padding: 0;
+    margin: 0 0 2mm;
+    background: none !important;
+    border: 0 !important;
+}
 
-      .list-unstyled {
-        padding-left: 0;
-        list-style: none;
-      }
+/* Cards become plain blocks — no boxes, no shadows, no wasted margin. */
+.card,
+.cv-projects {
+    padding: 0;
+    margin: 0 0 3.4mm;
+    background: none !important;
+    border: 0 !important;
+    border-radius: 0;
+    box-shadow: none !important;
+}
 
-      .social-icons {
-        list-style-type: none;
-        padding-left: 0;
-        display: -webkit-box;
-        display: -webkit-flex;
-        display: -ms-flexbox;
-        display: flex;
-        -webkit-box-pack: justify;
-        -webkit-justify-content: space-between;
-            -ms-flex-pack: justify;
-                justify-content: space-between;
-        max-width: 180px;
-      }
-      
-      .social-icons .social-link {
-        font-size: 18px;
-      }
-      
-      .social-icons .social-link:hover {
-        color: #F39C12;
-      }
+.card h3,
+.cv-h3 {
+    margin: 0 0 1.6mm;
+    padding: 0 0 .8mm;
+    font-size: 10pt;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--accent);
+    border-bottom: .5pt solid #ddd;
+}
 
-    
+/* The resume columns stack into one readable flow. */
+.about-grid,
+.resume-grid,
+.resume-col {
+    display: block;
+}
+
+/* ---------- Entries ---------- */
+.timeline { list-style: none; margin: 0; padding: 0; }
+
+.timeline > li {
+    padding: 0 0 2.2mm;
+    border: 0;
+    /* keep a role and its description on the same page */
+    break-inside: avoid;
+    page-break-inside: avoid;
+}
+.timeline > li::before { display: none; }
+
+.timeline h4 {
+    margin: 0;
+    font-size: 10pt;
+    font-weight: 700;
+    color: #000;
+}
+.timeline .at { font-weight: 400; color: #333; }
+.timeline .formerly { font-size: 8.6pt; color: #555; }
+
+.timeline .when {
+    margin: .3mm 0 1mm;
+    font-family: inherit;   /* the screen style is monospace; too techy on paper */
+    font-size: 8.6pt;
+    font-weight: 600;
+    color: #555;
+    letter-spacing: .01em;
+}
+
+.timeline p,
+.timeline li,
+.bullets li,
+.about-bio p {
+    font-size: 9.4pt;
+    color: #1a1a1a;
+}
+
+.bullets { list-style: none; margin: 0; padding: 0; }
+.bullets li { position: relative; padding-left: 3mm; margin-bottom: .6mm; }
+.bullets li::before {
+    content: "–";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: auto;
+    height: auto;
+    background: none;
+    border-radius: 0;
+    color: #555;
+}
+
+.timeline .meta { margin-top: .4mm; font-size: 8.6pt; }
+
+/* ---------- Skills ---------- */
+.skill-heading {
+    margin: 2.4mm 0 .8mm;
+    font-size: 8.6pt;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: #000;
+}
+.skill-heading:first-of-type { margin-top: 0; }
+
+/* Chips print as a comma-free inline run — compact and ATS-parsable. */
+.chips {
+    display: block;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: 9.4pt;
+    color: #1a1a1a;
+}
+.chips li {
+    display: inline;
+    padding: 0;
+    background: none;
+    border: 0;
+    border-radius: 0;
+    font-size: inherit;
+    color: inherit;
+    white-space: normal;
+}
+.chips li:not(:last-child)::after { content: " · "; color: #777; }
+
+.soft-skills { font-size: 9.4pt; color: #1a1a1a; }
+
+/* ---------- Languages ---------- */
+.langs {
+    display: block;      /* undo the screen grid, which adds a 1rem gap */
+    gap: 0;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.langs > li { margin-bottom: .3mm; }
+.lang-row {
+    display: block;
+    margin: 0;
+    font-size: 9.4pt;
+}
+.lang-row span:first-child { font-weight: 700; }
+.lang-row span:first-child::after { content: " — "; font-weight: 400; }
+.lang-level { font-size: 9.4pt; color: #1a1a1a; }
+
+/* ---------- Projects note ---------- */
+.cv-projects {
+    font-size: 9.4pt;
+    color: #1a1a1a;
+    margin: 0;
+}
+
+/* ==========================================================================
+   Links: make every destination visible on paper
+   ========================================================================== */
+a {
+    color: #000;
+    text-decoration: none;
+    font-weight: 600;
+    background: transparent;
+}
+
+/* Default: print the full URL after the link text. */
+a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 8pt;
+    font-weight: 400;
+    color: #555;
+    word-break: break-all;
+}
+
+/* Preferred: a short, human-readable label set via data-print-url.
+   Declared after the rule above so it wins on equal specificity. */
+a[data-print-url]::after {
+    content: " (" attr(data-print-url) ")";
+    font-size: 8pt;
+    font-weight: 400;
+    color: #555;
+    word-break: normal;
+}
+
+/* Already-legible or meaningless in print. */
+a[href^="mailto"]::after,
+a[href^="tel"]::after,
+a[href^="#"]::after {
+    content: "";
+}
+
+/* ==========================================================================
+   Pagination control
+   ========================================================================== */
+h1, h2, h3, h4, h5, h6 {
+    break-after: avoid;
+    page-break-after: avoid;
+    break-inside: avoid;
+    page-break-inside: avoid;
+}
+
+.card,
+.cv-head,
+.resume-block {
+    break-inside: auto;
+    page-break-inside: auto;
+}
+
+/* A heading must never be the last thing on a page. */
+.section-title { break-after: avoid; page-break-after: avoid; }
+
+img { break-inside: avoid; page-break-inside: avoid; }
+
+p, li { orphans: 3; widows: 3; }
+
+/* Experience is long enough to want the page break after it, not inside a role. */
+#experience { break-after: auto; }
+
+/* Keep colour where it carries meaning (accent rules, photo). */
+* {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
 }

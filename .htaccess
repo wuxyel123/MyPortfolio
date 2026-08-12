@@ -1,0 +1,93 @@
+# Apache config for the Aruba shared host.
+# Every block is wrapped in <IfModule> so a missing module degrades silently
+# instead of returning 500 for the whole site.
+#
+# Note: HTTPS and apex -> www redirects are already handled by Aruba's proxy.
+# Do not add rewrite rules for them here — behind the proxy they can loop.
+
+# ---------------------------------------------------------------------------
+# Hide dotfiles. The FTP deploy action writes .ftp-deploy-sync-state.json into
+# the web root, which lists every file on the server with sizes and hashes.
+# ---------------------------------------------------------------------------
+<FilesMatch "^\.">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# ACME/security.txt style lookups must stay reachable.
+<IfModule mod_alias.c>
+    RedirectMatch 404 /\.(?!well-known)
+</IfModule>
+
+# ---------------------------------------------------------------------------
+# MIME types the host may not know about
+# ---------------------------------------------------------------------------
+<IfModule mod_mime.c>
+    AddType image/webp                  .webp
+    AddType image/svg+xml               .svg
+    AddType application/manifest+json   .webmanifest
+    AddType text/css                    .css
+    AddType application/javascript      .js
+</IfModule>
+
+# ---------------------------------------------------------------------------
+# Caching.
+# Asset filenames are not content-hashed, so CSS/JS deliberately get a SHORT
+# max-age: a long one would leave visitors on a stale stylesheet after a
+# deploy. Images are effectively immutable and get a long one.
+# ---------------------------------------------------------------------------
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresDefault                          "access plus 1 hour"
+
+    ExpiresByType text/html                 "access plus 0 seconds"
+    ExpiresByType text/css                  "access plus 1 hour"
+    ExpiresByType application/javascript    "access plus 1 hour"
+
+    ExpiresByType image/webp                "access plus 1 year"
+    ExpiresByType image/png                 "access plus 1 year"
+    ExpiresByType image/jpeg                "access plus 1 year"
+    ExpiresByType image/svg+xml             "access plus 1 year"
+    ExpiresByType image/x-icon              "access plus 1 year"
+
+    ExpiresByType text/xml                  "access plus 1 day"
+    ExpiresByType text/plain                "access plus 1 day"
+</IfModule>
+
+<IfModule mod_headers.c>
+    # index.html must always be revalidated, otherwise a CV update can sit
+    # invisible in someone's browser cache.
+    <FilesMatch "\.(html)$">
+        Header set Cache-Control "no-cache, must-revalidate"
+    </FilesMatch>
+
+    <FilesMatch "\.(webp|png|jpe?g|svg|ico)$">
+        Header set Cache-Control "public, max-age=31536000, immutable"
+    </FilesMatch>
+
+    # Modest hardening for a static site.
+    Header set X-Content-Type-Options "nosniff"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always unset X-Powered-By
+</IfModule>
+
+# ---------------------------------------------------------------------------
+# Compression (Aruba already gzips, this is a no-op fallback)
+# ---------------------------------------------------------------------------
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml \
+                                  application/javascript application/json \
+                                  image/svg+xml
+</IfModule>
+
+<IfModule mod_dir.c>
+    DirectoryIndex index.html
+</IfModule>
+
+# No directory listings anywhere.
+Options -Indexes

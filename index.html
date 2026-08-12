@@ -2,358 +2,463 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="Alessandro Discalzi CV and portfolio.">
-    <meta name="keywords" content="Alessandro, Discalzi, Curriculum, CV, Experience, Expertise, Education, Portfolio, Projects, Skills, Developer, Backend, Info, Personal Informations, Contact, UNIPD, MSc, BSc" />
-    <meta name="author" content="Alessandro Discalzi | Software Engineer">
-    <meta name="google-site-verification" content="ZikSZx-LWeqYCh8d2ILV50jKZS34gmYzsiH2cH1xWLE" />
-    <link rel="canonical" href="https://www.alessandrodiscalzi.com/" />
-    <link rel="icon" href="assets/imgs/favicon.png" type="image/png"/>
-    <title>Alessandro Discalzi</title>
-    <!-- font icons -->
-    <link rel="stylesheet" href="assets/vendors/themify-icons/css/themify-icons.css">
-    <!-- Bootstrap + JohnDoe main styles -->
-	<link rel="stylesheet" href="assets/css/johndoe.css">
-    <link rel="stylesheet" href="assets/css/githubprojects.css" />
-    <link rel="stylesheet" href="assets/css/print.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/devicon.min.css">
-    <script src="assets/js/githubprojects.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Alessandro Discalzi — Software Engineer</title>
+    <meta name="description" content="Alessandro Discalzi — Software Engineer in Padua, Italy. Java, Spring Boot and Spring Batch backend development, ETL pipelines and cloud architecture. CV, projects and contacts.">
+    <meta name="author" content="Alessandro Discalzi">
+    <meta name="keywords" content="Alessandro Discalzi, Software Engineer, Backend Developer, Java, Spring Boot, Spring Batch, ETL, AWS, Padua, UNIPD, CV, Curriculum, Portfolio">
+    <meta name="google-site-verification" content="ZikSZx-LWeqYCh8d2ILV50jKZS34gmYzsiH2cH1xWLE">
+    <link rel="canonical" href="https://www.alessandrodiscalzi.com/">
+    <meta name="theme-color" content="#0b1120" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+
+    <!-- Open Graph / social preview -->
+    <meta property="og:type" content="profile">
+    <meta property="og:title" content="Alessandro Discalzi — Software Engineer">
+    <meta property="og:description" content="Backend software engineer in Padua, Italy. Java, Spring Boot, Spring Batch, ETL pipelines and cloud architecture.">
+    <meta property="og:url" content="https://www.alessandrodiscalzi.com/">
+    <meta property="og:image" content="https://www.alessandrodiscalzi.com/assets/imgs/avatar_head.jpg">
+    <meta property="og:locale" content="en_GB">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Alessandro Discalzi — Software Engineer">
+    <meta name="twitter:description" content="Backend software engineer in Padua, Italy. Java, Spring Boot, Spring Batch, ETL pipelines and cloud architecture.">
+    <meta name="twitter:image" content="https://www.alessandrodiscalzi.com/assets/imgs/avatar_head.jpg">
+
+    <link rel="icon" href="assets/imgs/favicon.png" type="image/png">
+    <link rel="apple-touch-icon" href="assets/imgs/avatar_head.jpg">
+
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/print.css" media="print">
+    <link rel="preconnect" href="https://api.github.com">
+
+    <!-- Applied before first paint to avoid a light flash on dark-theme loads -->
+    <script>
+        (function () {
+            var stored = null;
+            try { stored = localStorage.getItem('theme'); } catch (e) { /* private mode */ }
+            var dark = stored ? stored === 'dark'
+                : window.matchMedia('(prefers-color-scheme: dark)').matches;
+            document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+        })();
+    </script>
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Alessandro Discalzi",
+        "jobTitle": "Software Engineer",
+        "url": "https://www.alessandrodiscalzi.com/",
+        "image": "https://www.alessandrodiscalzi.com/assets/imgs/avatar_head.jpg",
+        "email": "mailto:alessandrodiscalzi98@gmail.com",
+        "address": { "@type": "PostalAddress", "addressLocality": "Padua", "addressRegion": "Veneto", "addressCountry": "IT" },
+        "alumniOf": { "@type": "CollegeOrUniversity", "name": "Università degli Studi di Padova", "url": "https://www.unipd.it/" },
+        "worksFor": { "@type": "Organization", "name": "Deda", "url": "https://www.dedagroup.it/" },
+        "knowsAbout": ["Java", "Spring Boot", "Spring Batch", "Apache Camel", "ETL", "Oracle Database", "AWS", "Cloud Architecture"],
+        "sameAs": [
+            "https://www.linkedin.com/in/alessandro-discalzi/",
+            "https://github.com/wuxyel123/"
+        ]
+    }
+    </script>
 </head>
-<body data-spy="scroll" data-target=".navbar" data-offset="40" id="home" >
-        <header class="header">
-        <div class="container">
-            <ul class="social-icons pt-3 print-hide">
-                <li class="social-item"><a class="social-link text-light" href="https://www.linkedin.com/in/alessandro-discalzi/" target="_blank" aria-label="LinkedIn"><i class="ti-linkedin" aria-hidden="true"></i></a></li>
-                <li class="social-item"><a class="social-link text-light" href="https://github.com/wuxyel123/" target="_blank" aria-label="GitHub"><i class="ti-github" aria-hidden="true"></i></a></li>
-                <li class="social-item"><a class="social-link text-light" href="https://www.instagram.com/alessandro_discalzi/" target="_blank" aria-label="Instagram"><i class="ti-instagram" aria-hidden="true"></i></a></li>
-            </ul>  
-            <div class="header-content">
-                <img src="assets/imgs/avatar.jpg" class="print-avatar" alt="Avatar">
-                <h4 class="header-subtitle" >Hello, I am</h4>
-                <h1 class="header-title">Alessandro Discalzi</h1>
-                <h6 class="header-mono" >Software Engineer</h6>
-                <button class="btn btn-primary btn-rounded" onclick="window.print();"><em class="ti-printer pr-2"></em>Print Resume</button>
-            </div>
-        </div>
-    </header>
-    <nav class="navbar sticky-top navbar-expand-lg navbar-light bg-white" data-spy="affix" data-offset-top="510">
-        <div class="container">
-            <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
+<body>
+
+<!-- Inline SVG icon sprite -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+    <symbol id="i-linkedin" viewBox="0 0 24 24"><path fill="currentColor" d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5M3 9h4v12H3zm7 0h3.8v1.7h.05c.53-.95 1.83-1.95 3.76-1.95C21.6 8.75 23 11.1 23 14.6V21h-4v-5.7c0-1.4-.03-3.2-2-3.2s-2.3 1.5-2.3 3.1V21h-4z"/></symbol>
+    <symbol id="i-github" viewBox="0 0 24 24"><path fill="currentColor" d="M12 .5a12 12 0 0 0-3.8 23.4c.6.1.8-.26.8-.57v-2c-3.34.72-4.04-1.6-4.04-1.6-.55-1.4-1.34-1.77-1.34-1.77-1.1-.75.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.84 2.8 1.3 3.5 1 .1-.78.42-1.31.76-1.61-2.67-.3-5.47-1.34-5.47-5.94 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.1-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.3-1.55 3.3-1.23 3.3-1.23.64 1.66.24 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.8 5.63-5.48 5.93.43.37.81 1.1.81 2.22v3.29c0 .31.2.68.81.57A12 12 0 0 0 12 .5"/></symbol>
+    <symbol id="i-mail" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M3 7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2zm0 .5 9 6 9-6"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2 4.2 2 2 0 0 1 4 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.4 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.8 2"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3" fill="none" stroke="currentColor" stroke-width="1.8"/></symbol>
+    <symbol id="i-print" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M6 9V3h12v6M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M6 14h12v7H6z"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" d="M12 1.5v2.5M12 20v2.5M4.2 4.2l1.8 1.8M18 18l1.8 1.8M1.5 12H4M20 12h2.5M4.2 19.8 6 18M18 6l1.8-1.8"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8"/></symbol>
+    <symbol id="i-external" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M14 4h6v6M20 4 10 14M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></symbol>
+    <symbol id="i-star" viewBox="0 0 24 24"><path fill="currentColor" d="m12 17.3-6.2 3.7 1.7-7L2 9.2l7.1-.6L12 2l2.9 6.6 7.1.6-5.5 4.8 1.7 7z"/></symbol>
+    <symbol id="i-fork" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M6 4.5v3m12-3v3M6 12.5v3m0-8a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3m12 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3M6 19.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3m0-4c0-2.2 1.8-4 4-4h4c2.2 0 4-1.8 4-4"/></symbol>
+</svg>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="topbar screen-only">
+    <div class="wrap topbar-inner">
+        <a class="brand" href="#top">
+            <img src="assets/imgs/avatar_head.jpg" alt="" width="36" height="36" loading="lazy">
+            <span class="brand-text">
+                <strong>Alessandro Discalzi</strong>
+                <small>Software Engineer</small>
+            </span>
+        </a>
+
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Open menu">
+            <span></span><span></span><span></span>
+        </button>
+
+        <nav id="site-nav" class="site-nav" aria-label="Main">
+            <a href="#about">About</a>
+            <a href="#resume">Resume</a>
+            <a href="#projects">Projects</a>
+            <a href="#contact">Contact</a>
+        </nav>
+
+        <div class="topbar-actions">
+            <button class="icon-btn theme-toggle" type="button" aria-label="Switch to dark theme">
+                <svg class="ico ico-sun" aria-hidden="true"><use href="#i-sun"></use></svg>
+                <svg class="ico ico-moon" aria-hidden="true"><use href="#i-moon"></use></svg>
             </button>
-            <div class="collapse mt-sm-20 navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item">
-                        <a href="#home" class="nav-link">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#about" class="nav-link">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#resume" class="nav-link">Resume</a>
-                    </li>
-                </ul>
-                <ul class="navbar-nav brand">
-                    <img src="assets/imgs/avatar.jpg" alt="" class="brand-img">
-                    <li class="brand-txt">
-                        <h5 class="brand-title">Alessandro Discalzi</h5>
-                        <div class="brand-subtitle">Software Engineer</div>
-                    </li>
-                </ul>
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <a href="#projects" class="nav-link">Projects</a>
-                    </li>
-                    <li class="nav-item last-item">
-                        <a href="#contact" class="nav-link">Contact</a>
-                    </li>
-                </ul>
-            </div>
+            <button class="btn btn-ghost btn-print" type="button" data-print>
+                <svg class="ico" aria-hidden="true"><use href="#i-print"></use></svg>
+                <span>CV</span>
+            </button>
         </div>
-    </nav>
-    <div class="container ">
-        <div class="print-header">
-            <img src="assets/imgs/avatar.jpg" class="print-avatar" alt="Avatar">
-            <div class="print-header-content">
-                <h1>Alessandro Discalzi</h1>
-                <h2>Software Engineer</h2>
+    </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero screen-only" id="top">
+    <div class="wrap hero-inner">
+        <div class="hero-copy">
+            <p class="eyebrow">Hello, I am</p>
+            <h1>Alessandro Discalzi</h1>
+            <p class="hero-role">Software Engineer</p>
+            <p class="hero-lede">
+                I build Java backends, Spring Batch ETL pipelines and cloud-agnostic
+                architectures — currently in the financial sector at
+                <a href="https://www.dedagroup.it/" target="_blank" rel="noopener">Deda</a>.
+            </p>
+
+            <div class="hero-actions">
+                <button class="btn btn-primary" type="button" data-print>
+                    <svg class="ico" aria-hidden="true"><use href="#i-print"></use></svg>
+                    <span>Download CV</span>
+                </button>
+                <a class="btn btn-outline" href="#projects">See my projects</a>
             </div>
+
+            <ul class="social-row" aria-label="Social profiles">
+                <li><a href="https://www.linkedin.com/in/alessandro-discalzi/" target="_blank" rel="noopener" aria-label="LinkedIn"><svg class="ico" aria-hidden="true"><use href="#i-linkedin"></use></svg></a></li>
+                <li><a href="https://github.com/wuxyel123/" target="_blank" rel="noopener" aria-label="GitHub"><svg class="ico" aria-hidden="true"><use href="#i-github"></use></svg></a></li>
+            </ul>
         </div>
 
-        <div id="about" class="row about-section">
-            <div class="col-md-6 col-lg-4 about-card">
-                <h3 class="font-weight-light">Personal Info</h3>
-                <span class="line mb-5"></span>
-                <ul class="mt40 info list-unstyled">
-                    <li><span>Birthdate</span> : 23/10/1998</li>
-                    <li><span>Email</span> : alessandrodiscalzi98@gmail.com</li>
-                    <li><span>Phone</span> : + (39) 3891173437</li>
-                    <li><span>Location</span> :  Padua, Veneto, Italy</li>
-                    <li><span>Nationality</span> : Italian </li>
-                </ul>
-                <ul class="social-icons pt-3 print-hide">
-                    <li class="social-item"><a class="social-link" href="https://www.linkedin.com/in/alessandro-discalzi/" target="_blank" aria-label="LinkedIn"><i class="ti-linkedin" aria-hidden="true"></i></a></li>
-                    <li class="social-item"><a class="social-link" href="https://github.com/wuxyel123/" target="_blank" aria-label="GitHub"><i class="ti-github" aria-hidden="true"></i></i></a></li>
-                    <li class="social-item"><a class="social-link" href="https://www.instagram.com/alessandro_discalzi/" target="_blank" aria-label="Instagram"><i class="ti-instagram" aria-hidden="true"></i></a></li>
-                </ul> 
-            </div>
-            <div class="col-md-6 col-lg-8 about-card">
-                <h3 class="font-weight-light">Who am I ?</h3>
-                <span class="line mb-5"></span>
-                <h5 class="mb-3">A Software Engineer Located In Padua</h5>
-                <p class="mt-20">
-                    I am a Software Engineer with <script>document.write(new Date().getFullYear()-2020-2)</script>+ years of experience. I started working in 2020 after my Bachelor's Degree in Computer Science <a href="https://www.unipd.it/" target="_blank">@UNIPD</a>. I am currently involved in the "ICT for Internet and multimedia" Master's Degree course <a href="https://www.unipd.it/" target="_blank">@UNIPD</a>. 
-                    </br>
-                    I am outgoing, dedicated, and open-minded. I am always looking for new challenges and opportunities to improve my skills. I am a team player but I also like working alone. I am a fast learner and I am always ready to learn new things. 
-                    </br>
-                    In my free time I like learning about new technologies and doing powerlifting.
+        <div class="hero-portrait">
+            <picture>
+                <source srcset="assets/imgs/avatar_badge.webp" type="image/webp">
+                <img src="assets/imgs/avatar_badge.png" alt="Portrait of Alessandro Discalzi"
+                     width="600" height="800" fetchpriority="high">
+            </picture>
+        </div>
+    </div>
+</section>
+
+<!-- ============ PRINT-ONLY CV HEADER ============ -->
+<header class="cv-head print-only">
+    <img src="assets/imgs/avatar_head.jpg" alt="" class="cv-photo">
+    <div class="cv-head-text">
+        <h1>Alessandro Discalzi</h1>
+        <p class="cv-role">Software Engineer</p>
+        <ul class="cv-contact">
+            <li>alessandrodiscalzi98@gmail.com</li>
+            <li>+39 389 117 3437</li>
+            <li>Padua, Veneto, Italy</li>
+            <li>Italian &middot; born 23/10/1998</li>
+            <li>linkedin.com/in/alessandro-discalzi</li>
+            <li>github.com/wuxyel123</li>
+            <li>www.alessandrodiscalzi.com</li>
+        </ul>
+    </div>
+</header>
+
+<main id="main">
+
+<!-- ============ ABOUT ============ -->
+<section class="section" id="about">
+    <div class="wrap">
+        <h2 class="section-title"><span class="accent">About</span> me</h2>
+
+        <div class="about-grid">
+            <article class="card about-bio">
+                <h3 class="cv-h3">Profile</h3>
+                <p>
+                    I am a Software Engineer with <span data-years-since="2020-11">5</span>+ years of
+                    experience, based in Padua, Italy. I started working in 2020 after my Bachelor's
+                    Degree in Computer Science at
+                    <a href="https://www.unipd.it/" target="_blank" rel="noopener" data-print-url="unipd.it">UNIPD</a>,
+                    and I hold a Master's Degree in ICT for Internet and Multimedia from the same
+                    university.
                 </p>
-                
-                <button class="btn btn-outline-danger" onclick="window.print();"><em class="icon-down-circled2"></em>Download My CV</button>
+                <p>
+                    My day-to-day is backend engineering: Java EE and Spring Boot microservices,
+                    Spring Batch ETL jobs and Apache Camel integrations running against Oracle
+                    databases in a financial context. I have also designed a cloud-agnostic
+                    architecture for IoT data analysis spanning AWS, Azure and Aruba Cloud.
+                </p>
+                <p>
+                    I am outgoing, dedicated and open-minded, comfortable owning a service
+                    end-to-end inside an Agile team and equally happy working independently.
+                    In my free time I keep up with new technologies and do powerlifting.
+                </p>
+            </article>
+
+            <aside class="card about-facts screen-only">
+                <h3>At a glance</h3>
+                <dl class="facts">
+                    <div><dt>Role</dt><dd>Software Engineer @ Deda</dd></div>
+                    <div><dt>Location</dt><dd>Padua, Veneto, Italy</dd></div>
+                    <div><dt>Email</dt><dd><a href="mailto:alessandrodiscalzi98@gmail.com">alessandrodiscalzi98@gmail.com</a></dd></div>
+                    <div><dt>Languages</dt><dd>Italian (Native) · English (B2) · French (A1)</dd></div>
+                    <div><dt>Open to</dt><dd>Software engineering roles of any kind — backend and cloud in particular</dd></div>
+                </dl>
+                <ul class="social-row social-row-sm" aria-label="Social profiles">
+                    <li><a href="https://www.linkedin.com/in/alessandro-discalzi/" target="_blank" rel="noopener" aria-label="LinkedIn"><svg class="ico" aria-hidden="true"><use href="#i-linkedin"></use></svg></a></li>
+                    <li><a href="https://github.com/wuxyel123/" target="_blank" rel="noopener" aria-label="GitHub"><svg class="ico" aria-hidden="true"><use href="#i-github"></use></svg></a></li>
+                </ul>
+            </aside>
+        </div>
+    </div>
+</section>
+
+<!-- ============ RESUME ============ -->
+<section class="section section-alt" id="resume">
+    <div class="wrap">
+        <h2 class="section-title"><span class="accent">My</span> Resume</h2>
+
+        <div class="resume-grid">
+
+            <!-- Experience -->
+            <div class="card resume-block" id="experience">
+                <h3 class="cv-h3">Experience</h3>
+                <ol class="timeline">
+                    <li>
+                        <h4>Software Engineer <span class="at">@ <a href="https://www.dedagroup.it/" target="_blank" rel="noopener" data-print-url="dedagroup.it">Deda</a> <span class="formerly">(formerly SCAI ITEC)</span></span></h4>
+                        <p class="when">11/2024 — Present</p>
+                        <p>Engineering, development and testing of Spring Batch ETL jobs in a
+                        financial context using Java EE, Apache Camel, Spring Batch, Oracle DB,
+                        OpenAPI, JBoss, Maven and Git.</p>
+                    </li>
+                    <li>
+                        <h4>Intern R&amp;D Engineer <span class="at">@ <a href="https://221e.com/" target="_blank" rel="noopener" data-print-url="221e.com">221e</a></span></h4>
+                        <p class="when">03/2024 — 08/2024</p>
+                        <p>Designed and implemented a scalable, cloud-agnostic architecture to manage
+                        and analyse data from IoT devices. Integrates with AWS, Microsoft Azure and
+                        Aruba Cloud, supporting both horizontal and vertical scaling.</p>
+                    </li>
+                    <li>
+                        <h4>Backend Developer <span class="at">@ <a href="https://scaiitec.it/" target="_blank" rel="noopener" data-print-url="scaiitec.it">SCAI ITEC</a></span></h4>
+                        <p class="when">11/2020 — 11/2022</p>
+                        <ul class="bullets">
+                            <li>Java backend development of microservices on a proprietary framework
+                            using Java EE, Apache Camel, Spring Boot, Spring Batch, Oracle DB,
+                            OpenAPI, JBoss, Maven and Git.</li>
+                            <li>AWS training with the R&amp;D group.</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <h4>Intern Backend Developer <span class="at">@ <a href="https://scaiitec.it/" target="_blank" rel="noopener" data-print-url="scaiitec.it">SCAI ITEC</a></span></h4>
+                        <p class="when">06/2020 — 07/2020</p>
+                        <p>Developed a proof of concept web app for creating advertising content
+                        using JHipster, Java EE and Angular.</p>
+                    </li>
+                    <li>
+                        <h4>Computer Technician</h4>
+                        <p class="when">07/2017 — 08/2017</p>
+                        <p>Maintenance and repair of computers, customer interaction and shop
+                        management.</p>
+                    </li>
+                </ol>
+            </div>
+
+            <div class="resume-col">
+                <!-- Education -->
+                <div class="card resume-block" id="education">
+                    <h3 class="cv-h3">Education</h3>
+                    <ol class="timeline">
+                        <li>
+                            <h4>Master's Degree in ICT for Internet and Multimedia
+                                <span class="at">@ <a href="https://www.unipd.it/" target="_blank" rel="noopener" data-print-url="unipd.it">UNIPD</a></span></h4>
+                            <p class="when">09/2022 — 12/2024</p>
+                            <p>Thesis:
+                                <a href="https://github.com/wuxyel123/Scalable-Cloud-Agnostic-architecture-for-IoT-data-analysis-and-machine-learning/blob/master/Scalable_Cloud_Agnostic_architecture_for_IoT_data_analysis_and_machine_learning.pdf"
+                                   target="_blank" rel="noopener" data-print-url="github.com/wuxyel123 → thesis PDF">Scalable
+                                Cloud-Agnostic Architecture for IoT Data Analysis and Machine Learning</a>.
+                            </p>
+                            <p class="meta"><a href="https://bestr.it/award/show/a_GUPq1jR8aRns--tRNJBA?ln=it" target="_blank" rel="noopener" data-print-url="bestr.it">Degree certificate</a></p>
+                        </li>
+                        <li>
+                            <h4>Bachelor's Degree in Computer Science
+                                <span class="at">@ <a href="https://www.unipd.it/" target="_blank" rel="noopener" data-print-url="unipd.it">UNIPD</a></span></h4>
+                            <p class="when">10/2017 — 09/2020</p>
+                            <p>Thesis:
+                                <a href="https://github.com/wuxyel123/tesi-ams/blob/master/Discalzi_Alessandro.pdf"
+                                   target="_blank" rel="noopener" data-print-url="github.com/wuxyel123/tesi-ams">Advertising
+                                Management System — Creazione e gestione di contenuti pubblicitari</a>.
+                            </p>
+                            <p class="meta"><a href="https://bestr.it/award/show/aNTYOPGlQUyq9RA-3jEtIQ" target="_blank" rel="noopener" data-print-url="bestr.it">Degree certificate</a></p>
+                        </li>
+                    </ol>
+                </div>
+
+                <!-- Certifications -->
+                <div class="card resume-block" id="certifications">
+                    <h3 class="cv-h3">Certifications</h3>
+                    <ol class="timeline">
+                        <li>
+                            <h4>AWS Partner: Accreditation (Technical)</h4>
+                            <p class="when">Issued 04/2022 — No expiration date</p>
+                            <p class="meta"><a href="https://www.credly.com/badges/c54543b8-f07f-4585-b4e9-25dca8ddbdcd/public_url" target="_blank" rel="noopener" data-print-url="credly.com">Show credential</a></p>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="resume-col">
+                <!-- Skills -->
+                <div class="card resume-block" id="skills">
+                    <h3 class="cv-h3">Skills</h3>
+
+                    <h4 class="skill-heading">Languages &amp; formats</h4>
+                    <p class="hint screen-only">Roughly from most to least used.</p>
+                    <ul class="chips">
+                        <li>Java</li><li>Python</li><li>SQL</li><li>Bash</li><li>JSON</li>
+                        <li>XML</li><li>YAML</li><li>Markdown</li><li>LaTeX</li><li>C++</li>
+                        <li>HTML</li><li>CSS</li><li>PHP</li>
+                    </ul>
+
+                    <h4 class="skill-heading">Frameworks &amp; platforms</h4>
+                    <ul class="chips">
+                        <li>Spring Boot</li><li>Spring Batch</li><li>Java EE</li><li>Apache Camel</li>
+                        <li>JBoss</li><li>OpenAPI</li><li>JHipster</li><li>JUnit</li>
+                        <li>Oracle DB</li><li>PostgreSQL</li><li>Docker</li>
+                        <li>AWS</li><li>Azure</li><li>Aruba Cloud</li><li>Flutter</li>
+                    </ul>
+
+                    <h4 class="skill-heading">Data &amp; machine learning</h4>
+                    <ul class="chips">
+                        <li>Machine learning</li><li>Neural networks</li>
+                        <li>Data analysis</li><li>Jupyter</li>
+                    </ul>
+
+                    <h4 class="skill-heading">Tools &amp; ways of working</h4>
+                    <ul class="chips">
+                        <li>Git</li><li>Maven</li><li>IntelliJ IDEA</li><li>Eclipse</li>
+                        <li>VS Code</li><li>Postman</li><li>SonarQube</li><li>Jira</li>
+                        <li>Confluence</li><li>Scrum</li><li>Agile</li>
+                        <li>AI-assisted development</li><li>Claude Code</li>
+                        <li>Linux / macOS / Windows</li>
+                    </ul>
+
+                    <h4 class="skill-heading">Soft skills</h4>
+                    <p class="soft-skills">Adaptability · Organisation · Patience · Planning ·
+                    Problem-solving · Self-learning · Teamwork · Time management · Trust</p>
+                </div>
+
+                <!-- Languages -->
+                <div class="card resume-block" id="languages">
+                    <h3 class="cv-h3">Languages</h3>
+                    <ul class="langs">
+                        <li>
+                            <div class="lang-row"><span>Italian</span><span class="lang-level">Native</span></div>
+                            <div class="meter screen-only"><i style="width:100%"></i></div>
+                        </li>
+                        <li>
+                            <div class="lang-row"><span>English</span><span class="lang-level">B2 — Upper intermediate</span></div>
+                            <div class="meter screen-only"><i style="width:66%"></i></div>
+                        </li>
+                        <li>
+                            <div class="lang-row"><span>French</span><span class="lang-level">A1 — Beginner</span></div>
+                            <div class="meter screen-only"><i style="width:15%"></i></div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- ============ PROJECTS ============ -->
+<section class="section" id="projects">
+    <div class="wrap">
+        <h2 class="section-title"><span class="accent">My</span> Projects</h2>
+
+        <div class="print-only cv-projects">
+            <h3 class="cv-h3">Projects</h3>
+            <p>All my projects are on github.com/wuxyel123 — full portfolio,
+            including this site, at www.alessandrodiscalzi.com</p>
+        </div>
+
+        <div class="projects-head screen-only">
+            <p class="section-lede">Public repositories, pulled live from GitHub.</p>
+            <label class="search">
+                <span class="visually-hidden">Search projects</span>
+                <input type="search" class="filter-repos" placeholder="Search projects…" autocomplete="off">
+            </label>
+        </div>
+
+        <ul class="repo-list screen-only" aria-live="polite"></ul>
+
+        <p class="projects-foot screen-only">
+            <a class="btn btn-outline" href="https://github.com/wuxyel123/" target="_blank" rel="noopener">
+                <svg class="ico" aria-hidden="true"><use href="#i-github"></use></svg>
+                <span>View all on GitHub</span>
+            </a>
+        </p>
+    </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section class="section section-alt screen-only" id="contact">
+    <div class="wrap">
+        <h2 class="section-title"><span class="accent">Get in</span> touch</h2>
+
+        <div class="contact-grid">
+            <div class="card">
+                <h3>Send a message</h3>
+                <div id="hubspot-form"></div>
+                <noscript><p>Please enable JavaScript to use the contact form, or email me directly.</p></noscript>
+            </div>
+
+            <div class="card contact-info">
+                <h3>Contact details</h3>
+                <ul class="contact-list">
+                    <li>
+                        <svg class="ico" aria-hidden="true"><use href="#i-mail"></use></svg>
+                        <div><span>Email</span><a href="mailto:alessandrodiscalzi98@gmail.com">alessandrodiscalzi98@gmail.com</a></div>
+                    </li>
+                    <li>
+                        <svg class="ico" aria-hidden="true"><use href="#i-pin"></use></svg>
+                        <div><span>Location</span>Padua, Veneto, Italy</div>
+                    </li>
+                    <li>
+                        <svg class="ico" aria-hidden="true"><use href="#i-linkedin"></use></svg>
+                        <div><span>LinkedIn</span><a href="https://www.linkedin.com/in/alessandro-discalzi/" target="_blank" rel="noopener">alessandro-discalzi</a></div>
+                    </li>
+                    <li>
+                        <svg class="ico" aria-hidden="true"><use href="#i-github"></use></svg>
+                        <div><span>GitHub</span><a href="https://github.com/wuxyel123/" target="_blank" rel="noopener">wuxyel123</a></div>
+                    </li>
+                </ul>
+                <p class="hint">Phone number is on my CV — hit “Download CV” above.</p>
             </div>
         </div>
     </div>
+</section>
 
-    <!--Resume Section-->
-    <section class="section" id="resume">
-        <div class="container">
-            <h2 class="mb-5"><span class="text-danger">My</span> Resume</h2>
-            <div class="row">
-                <div id="Expertise "class="col-md-6 col-lg-4">
-                    <div class="card">
-                       <div class="card-header">
-                            <div class="mt-2">
-                                <h4>Expertise</h4>
-                                <span class="line"></span>  
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <h6 class="title text-danger">Software Engineer <a href="https://scaiitec.it/" target="_blank">@SCAI ITEC</a></h6>
-                            <P class="title">11/2024 - Present</P>
-                            <P class="subtitle">Engineering, development and test of Spring Batch ETL jobs in a financial context using: Java EE, Camel, Spring Batch, Oracle DB, Open API, Jboss, Maven, and Git.</P>
-                            <hr>
-                            <h6 class="title text-danger">Intern R&D Engineer <a href="https://221e.com/" target="_blank">@221e</a></h6>
-                            <P class="title">03/2024 - 08/2024</P>
-                            <P class="subtitle">Designed and implemented a scalable, cloud-agnostic architecture to manage and analyze data from Internet of Things (IoT) devices. The architecture seamlessly integrates with leading cloud platforms, including AWS, Microsoft Azure, and Aruba Cloud, supporting both horizontal and vertical scaling. </P>
-                            <hr>
-                            <h6 class="title text-danger">Backend Developer <a href="https://scaiitec.it/" target="_blank">@SCAI ITEC</a></h6>
-                            <P class="title">11/2020 - 11/2022</P>
-                            <P class="subtitle">
-                                <ul>
-                                    <li>Java backend development of microservices in a proprietary framework using: Java EE, Camel, Spring Boot, Spring Batch, Oracle DB, Open API, Jboss, Maven, and Git.</li>
-                                    <li>AWS training with R&D group.</li>
-                                </ul>
-                                
-                            </P>
-                            <hr>
-                            <h6 class="title text-danger">Intern Backend Developer <a href="https://scaiitec.it/" target="_blank">@SCAI ITEC</a></h6>
-                            <P class="title">06/2020 - 07/2020</P>
-                            <P class="subtitle">Develop a PoC of a WebApp used to create advertising content using: JHipster, Java EE, Angular.</P>
-                            <hr>
-                            <h6 class="title text-danger">Computer Technician</h6>
-                            <P class="title">07/2017 - 08/2017</P>
-                            <P class="subtitle">Maintenance and repair of computers.
-                                Interaction with customers and shop management.</P>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-4">
-                    <div id="Education" class="card">
-                       <div class="card-header">
-                            <div class="mt-2">
-                                <h4>Education</h4>
-                                <span class="line"></span>  
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <h6 class="title text-danger">Master degree in ICT for Internet and Multimedia <a href="https://www.unipd.it/" target="_blank">@UNIPD</a></h6>
-                            <P class="title">09/2022 - 12/2024</P>
-                            <P class="subtitle">Thesis: <a href="https://github.com/wuxyel123/Scalable-Cloud-Agnostic-architecture-for-IoT-data-analysis-and-machine-learning/blob/master/Scalable_Cloud_Agnostic_architecture_for_IoT_data_analysis_and_machine_learning.pdf" target="_blank">Scalable Cloud Agnostic Architecture for IoT Data
-                                Analysis and Machine Learning</a></P>
-                                <P class="subtitle print-hide"><a href="https://bestr.it/award/show/a_GUPq1jR8aRns--tRNJBA?ln=it" target="_blank">Degree certificate</a></P>
+</main>
 
-                            <hr>
-                            <h6 class="title text-danger">Bachelor degree in Computer Science <a href="https://www.unipd.it/" target="_blank">@UNIPD</a></h6>
-                            <P class="title">10/2017 - 09/2020</P>
-                            <P class="subtitle">Thesis: <a href="https://github.com/wuxyel123/tesi-ams/blob/master/Discalzi_Alessandro.pdf" target="_blank">Advertising management system: Creazione e gestione di contenuti pubblicitari</a></P>
-                            <P class="subtitle print-hide"><a href="https://bestr.it/award/show/aNTYOPGlQUyq9RA-3jEtIQ#" target="_blank">Degree certificate</a></P>
-                            
-                        </div>
-                    </div>
-                    <div id="Certifications" class="card">
-                        <div class="card-header">
-                             <div class="mt-2">
-                                 <h4>Certifications</h4>
-                                 <span class="line"></span>  
-                             </div>
-                         </div>
-                         <div class="card-body">
-                             <h6 class="title text-danger">AWS Partner: Accreditation (Technical)</h6>
-                             <P class="title">Issued 04/2022 - No Expiration Date</P>
-                             <p class="subtitle print-hide"><a href="https://www.credly.com/badges/c54543b8-f07f-4585-b4e9-25dca8ddbdcd/public_url" target="_blank">Show Credential</a></p>
-                             <hr>
-                             <h6 class="title text-danger">AWS Cloud Practicioner</h6>
-                             <P class="title">Issued 12/2021 - Expired 12/2024</P>
-                             <P class="subtitle print-hide"><a href="https://www.credly.com/badges/7c941ba8-edda-4f63-9128-a9b5b5690022/public_url" target="_blank">Show Credential</a></p>
-                         </div>
-                     </div>
-                </div>
-                <div class="col-md-6 col-lg-4">
-                    <div id="Skills" class="card">
-                       <div class="card-header">
-                            <div class="mt-2">
-                                <h4>Skills</h4>
-                                <span class="line"></span>  
-                            </div>
-                        </div>
-                        <div class="card-body pb-2">
-                           <h6 class="title text-danger">Programming and scripting Languages</h6>
-                           <p class="subtitle>"> (From most used to least used)</p>
-                           <p>
-                            Java, Python, SQL, JSON, XML, Bash, Markdown, LaTeX, YAML, C++, HTML, CSS, PHP
-                           </p>
-                        </div>
-                        <div class="card-body pb-2">
-                            <h6 class="title text-danger">Tools and Frameworks</h6>
-                            <p>Aruba Cloud, AWS, Azure, Camel, Confluence, Docker, Eclipse, IntelliJ IDEA, JBoss, JHipster, Jira, JUnit, Jupyter Notebook, MacOS, Maven, Open API, Oracle DB, PostgreSQL, Postman, Scrum, Slack, SonarQube, Spring Batch, Spring Boot, Ubuntu, Visual Studio Code, Windows, GIT</p>
-                         </div>
-                         <div class="card-body pb-2">
-                            <h6 class="title text-danger">Soft Skills</h6>
-                            <p>
-                                Adaptability, Organization, Patience, Planning, Problem-solving, Self-Learning, Teamwork, Time management, Trust, Agile Methodology
-                            </p>
-                         </div>
-                    </div>
-                    <div class="print-languages">
-                        <h6 class="title text-danger">Languages</h6>
-                        <p class="subtitle">Italian (Native), English (B2), French (A1)</p>
-                    </div>
-                    <div id="Languages" class="card print-hide">
-                        <div class="card-header">
-                            <div class="pull-right">
-                                <h4 class="mt-2">Languages</h4>
-                                <span class="line"></span>  
-                            </div>
-                        </div>
-                        <div class="card-body pb-2">
-                            <h6>Italian</h6>
-                            <div class="progress mb-3">
-                                <div class="progress-bar bg-danger" role="progressbar" style="width: 100%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                            <h6>English</h6>
-                            <div class="progress mb-3">
-                                <div class="progress-bar bg-danger" role="progressbar" style="width: 66%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                            <h6>French</h6>
-                            <div class="progress mb-3">
-                                <div class="progress-bar bg-danger" role="progressbar" style="width: 10%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-            </div>
-        </div>
-    </section>
-    <!-- End Resume Section -->
+<footer class="site-footer screen-only">
+    <div class="wrap footer-inner">
+        <p>&copy; <span data-year>2026</span> Alessandro Discalzi</p>
+        <p class="footer-links">
+            <a href="https://github.com/wuxyel123/" target="_blank" rel="noopener">GitHub</a>
+            <a href="https://www.linkedin.com/in/alessandro-discalzi/" target="_blank" rel="noopener">LinkedIn</a>
+            <a href="#top">Back to top</a>
+        </p>
+    </div>
+</footer>
 
-    <!-- Start Portfolio Section -->
-    <section class="section" id="projects">
-        <div class="container">
-            <div class="col-lg-12">
-                <h2 class="mb-5"><span class="text-danger">My</span> Projects</h2>
-                <p class="print-projects">Take a look of all my projects on <a href="https://github.com/wuxyel123/"> github.com/wuxyel123</a> or <a href="http://www.alessandrodiscalzi.com">www.alessandrodiscalzi.com</a></p>
-                <div class="card print-hide">
-                        <section class="repos">
-                            <input type="text" class="filter-repos hide" placeholder="Search Projects" />
-                            <ul class="repo-list"></ul>
-                        </section>
-                        <small>Made with ❤ by <a href="https://github.com/2KAbhishek/projects" target="_blank">2KAbhishek X OSS</a></small>
-                </div>
-            </div>
-        </div>
-    </section>
-
-
-    <!-- Start Contact Section -->
-    <section class="section  bg-custom-gray small-bottom-padding" id="contact">
-        <div class="contact">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-8">
-                        <div class="contact-form-card">
-                            <h4 class="contact-title">Send a message</h4>
-                            <script charset="utf-8" type="text/javascript" src="//js-eu1.hsforms.net/forms/v2.js"></script>
-                            <script>
-                            hbspt.forms.create({
-                                region: "eu1",
-                                portalId: "26284719",
-                                formId: "551d968c-eaaa-45b3-a1b7-f51943572586",
-                                version: "V2_PRERELEASE"
-                            });
-                            </script>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="contact-info-card">
-                            <h4 class="contact-title">Get in touch</h4>
-                            <div class="row mb-2">
-                                <div class="col-1 pt-1 mr-1">
-                                    <em class="ti-mobile icon-md"></em>
-                                </div>
-                                <div class="col-10 ">
-                                    <h6 class="d-inline">Phone : <br> <span class="text-muted">+ (39) 3891173437</span></h6>
-                                </div>
-                            </div>
-                            <div class="row mb-2">
-                                <div class="col-1 pt-1 mr-1">
-                                    <em class="ti-map-alt icon-md"></em>
-                                </div>
-                                <div class="col-10">
-                                    <h6 class="d-inline">Location :<br> <span class="text-muted">Padua, Veneto, Italy</span></h6>
-                                </div>
-                            </div>
-                            <div class="row mb-2">
-                                <div class="col-1 pt-1 mr-1">
-                                    <em class="ti-envelope icon-md"></em>
-                                </div>
-                                <div class="col-10">
-                                    <h6 class="d-inline">Email :<br> <span class="text-muted">alessandrodiscalzi98@gmail.com</span></h6>
-                                </div>
-                            </div>
-                            <ul class="social-icons pt-3">
-                                <li class="social-item"><a class="social-link text-dark" href="https://www.linkedin.com/in/alessandro-discalzi/" target="_blank" aria-label="LinkedIn"><i class="ti-linkedin" aria-hidden="true"></i></a></li>
-                                <li class="social-item"><a class="social-link text-dark" href="https://github.com/wuxyel123/" target="_blank" aria-label="GitHub"><i class="ti-github" aria-hidden="true"></i></a></li>
-                                <li class="social-item"><a class="social-link text-dark" href="https://www.instagram.com/alessandro_discalzi/" target="_blank" aria-label="Instagram"><i class="ti-instagram" aria-hidden="true"></i></a></li>
-                            </ul> 
-                        </div>
-                    </div>
-                </div>
-    
-            </div>
-        </div>
-    </section>
-    
-    <footer class="footer py-3">
-        <div class="container">
-            <p class="small mb-0 text-light">
-                &copy; <script>document.write(new Date().getFullYear())</script> Website made by <a href="#home" >Alessandro Discalzi</a> using Template created by <a href="http://devcrud.com" target="_blank"><span class="text-danger" title="Bootstrap 4 Themes and Dashboards">DevCRUD</span></a> 
-            </p>
-        </div>
-    </footer>
-
-	<!-- core  -->
-    <script src="assets/vendors/jquery/jquery-3.4.1.js"></script>
-    <script src="assets/vendors/bootstrap/bootstrap.bundle.js"></script>
-
-    <!-- bootstrap 3 affix -->
-    <script src="assets/vendors/bootstrap/bootstrap.affix.js"></script>
-
-    <!-- Isotope  -->
-    <script src="assets/vendors/isotope/isotope.pkgd.js"></script>
-
-    <!-- JohnDoe js -->
-    <script src="assets/js/johndoe.js"></script>
-
+<script src="assets/js/main.js" defer></script>
+<script src="assets/js/githubprojects.js" defer></script>
 </body>
 </html>
