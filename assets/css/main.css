@@ -57,6 +57,29 @@ html {
     /* offset for the sticky header when jumping to an anchor */
     scroll-padding-top: 84px;
     -webkit-text-size-adjust: 100%;
+
+    /* One section per swipe. Per the scroll-snap spec a snap area taller than
+       the viewport can rest anywhere inside it, so long sections (Resume,
+       Projects) still scroll normally instead of trapping the page. */
+    scroll-snap-type: y mandatory;
+}
+
+.hero,
+.section,
+.site-footer {
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+}
+
+/* Full-height sections, content centred, so each snap lands on a composed
+   screen rather than mid-paragraph. Sections with more content than fits
+   simply grow past it. */
+.hero,
+.section {
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 body {
@@ -217,15 +240,29 @@ a:hover { color: var(--accent-strong); }
     position: relative;
     padding: clamp(3rem, 7vw, 5.5rem) 0 clamp(2rem, 5vw, 4rem);
     background:
-        radial-gradient(900px 420px at 78% 12%, var(--accent-soft), transparent 62%),
+        radial-gradient(820px 420px at 50% 6%, var(--accent-soft), transparent 65%),
         linear-gradient(180deg, var(--bg-alt), var(--bg));
     border-bottom: 1px solid var(--border);
     overflow: hidden;
 }
 
 .hero-inner {
-    display: grid; align-items: center; gap: clamp(1.5rem, 5vw, 3.5rem);
-    grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr);
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+
+/* Sized to the source: avatar_head.jpg is 360px, so 160px stays within native
+   resolution even at 2x device pixel ratio. Going bigger would upscale and
+   soften it — the photo simply has no more detail to give. */
+.hero-avatar {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 0 auto 1.6rem;
+    border: 4px solid var(--surface);
+    box-shadow: 0 0 0 1px var(--border), var(--shadow-lg);
 }
 
 .eyebrow {
@@ -249,13 +286,16 @@ a:hover { color: var(--accent-strong); }
 }
 
 .hero-lede {
-    max-width: 52ch; margin-bottom: 1.9rem;
+    max-width: 54ch; margin: 0 auto 1.9rem;
     font-size: clamp(1rem, 1.6vw, 1.1rem); color: var(--text-muted);
 }
 
-.hero-actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-bottom: 1.75rem; }
+.hero-actions {
+    display: flex; flex-wrap: wrap; gap: .75rem;
+    justify-content: center; margin-bottom: 1.75rem;
+}
 
-.social-row { display: flex; gap: .5rem; list-style: none; }
+.social-row { display: flex; gap: .5rem; list-style: none; justify-content: center; }
 .social-row a {
     display: grid; place-items: center;
     width: 42px; height: 42px; border-radius: 999px;
@@ -266,20 +306,6 @@ a:hover { color: var(--accent-strong); }
 .social-row a:hover { color: var(--accent); border-color: var(--accent); transform: translateY(-2px); }
 .social-row .ico { width: 18px; height: 18px; }
 .social-row-sm a { width: 38px; height: 38px; }
-
-.hero-portrait { position: relative; justify-self: center; }
-.hero-portrait::before {
-    content: "";
-    position: absolute; inset: auto 0 0 0; height: 88%;
-    background: linear-gradient(160deg, var(--accent) 0%, var(--accent-strong) 100%);
-    border-radius: 200px 200px var(--radius) var(--radius);
-    opacity: .13;
-}
-.hero-portrait img {
-    position: relative;
-    width: min(330px, 100%);
-    filter: drop-shadow(0 24px 34px rgba(16, 21, 31, .28));
-}
 
 /* ---------- Sections ---------- */
 .section { padding: var(--step) 0; }
@@ -519,20 +545,66 @@ a:hover { color: var(--accent-strong); }
     .site-nav a.is-active::after { display: none; }
     .topbar-inner { flex-wrap: wrap; padding-block: .5rem; }
 
-    .hero-inner { grid-template-columns: 1fr; text-align: center; }
-    .hero-copy { order: 2; }
-    .hero-portrait { order: 1; }
-    .hero-portrait img { width: min(220px, 60%); }
-    .hero-lede { margin-inline: auto; }
-    .hero-actions, .social-row { justify-content: center; }
+    .hero-avatar { width: 128px; height: 128px; }
+
+    /* Keep brand, actions and the menu button on a single row: without this
+       the toggle wraps onto a line of its own. The brand must be allowed to
+       shrink (flex items default to min-width:auto and refuse to). */
+    .brand-text small { display: none; }
+    .btn-print span { display: none; }
+    .btn-print { padding: .5rem .7rem; }
+    .topbar-inner { gap: .5rem; }
+    .brand { min-width: 0; }
+    .brand-text { min-width: 0; }
+    /* A wrapping flex container wraps items before it shrinks them, so the
+       brand's base size has to be capped outright, not just made shrinkable. */
+    .brand-text strong {
+        max-width: 33vw;
+        white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+}
+
+/* Below this the name no longer fits beside the controls at all — and it is
+   repeated in the hero immediately underneath, so the mark alone is enough. */
+@media (max-width: 430px) {
+    .brand-text { display: none; }
 
     .resume-grid { grid-template-columns: 1fr; }
     .projects-head { flex-direction: column; align-items: stretch; }
     .search input { width: 100%; }
 }
 
+/* ---------- Section reveal ----------
+   Driven entirely by CSS scroll timelines. Everything lives inside @supports,
+   so a browser without them simply shows the content — the animation can
+   never be the reason something is invisible. No JS is involved, so it also
+   survives a script failure. */
+@keyframes reveal-in {
+    from { opacity: 0; transform: translateY(26px); }
+    to   { opacity: 1; transform: none; }
+}
+
+@supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+        .hero-copy > *,
+        .section-title,
+        .card,
+        .projects-head,
+        .projects-foot {
+            /* Deliberately NO fill-mode. With `both`, an element outside the
+               range sits on the from-keyframe — i.e. invisible — so if the
+               timeline ever fails to advance the content is simply gone.
+               With no fill, an inactive timeline leaves the normal, visible
+               style in place and the worst case is "no animation". */
+            animation: reveal-in linear;
+            animation-timeline: view();
+            animation-range: entry 0% entry 75%;
+        }
+    }
+}
+
 @media (prefers-reduced-motion: reduce) {
-    html { scroll-behavior: auto; }
+    html { scroll-behavior: auto; scroll-snap-type: none; }
     *, *::before, *::after {
         animation-duration: .001ms !important;
         transition-duration: .001ms !important;

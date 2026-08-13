@@ -44,4 +44,13 @@ jobs:
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
         server-dir: /www.alessandrodiscalzi.com/
+        # Setting this replaces the action's defaults, so the .git/node_modules
+        # patterns have to be repeated here.
+        exclude: |
+          **/.git*
+          **/.git*/**
+          **/node_modules/**
+          assets/imgs/_sources/**
+          LICENSE
+          README.txt
           

@@ -27,8 +27,8 @@
     <link rel="icon" href="assets/imgs/favicon.png" type="image/png">
     <link rel="apple-touch-icon" href="assets/imgs/avatar_head.jpg">
 
-    <link rel="stylesheet" href="assets/css/main.css">
-    <link rel="stylesheet" href="assets/css/print.css" media="print">
+    <link rel="stylesheet" href="assets/css/main.css?v=202608131042">
+    <link rel="stylesheet" href="assets/css/print.css?v=202608131042" media="print">
     <link rel="preconnect" href="https://api.github.com">
 
     <!-- Applied before first paint to avoid a light flash on dark-theme loads -->
@@ -119,6 +119,8 @@
 <section class="hero screen-only" id="top">
     <div class="wrap hero-inner">
         <div class="hero-copy">
+            <img class="hero-avatar" src="assets/imgs/avatar_head.jpg"
+                 alt="Alessandro Discalzi" width="360" height="360" fetchpriority="high">
             <p class="eyebrow">Hello, I am</p>
             <h1>Alessandro Discalzi</h1>
             <p class="hero-role">Software Engineer</p>
@@ -142,13 +144,6 @@
             </ul>
         </div>
 
-        <div class="hero-portrait">
-            <picture>
-                <source srcset="assets/imgs/avatar_badge.webp" type="image/webp">
-                <img src="assets/imgs/avatar_badge.png" alt="Portrait of Alessandro Discalzi"
-                     width="600" height="800" fetchpriority="high">
-            </picture>
-        </div>
     </div>
 </section>
 
@@ -181,23 +176,25 @@
             <article class="card about-bio">
                 <h3 class="cv-h3">Profile</h3>
                 <p>
-                    I am a Software Engineer with <span data-years-since="2020-11">5</span>+ years of
-                    experience, based in Padua, Italy. I started working in 2020 after my Bachelor's
+                    Software Engineer with <span data-years-since="2020-11">5</span>+ years of
+                    experience, based in Padua, Italy. I began my career in 2020 after a Bachelor's
                     Degree in Computer Science at
                     <a href="https://www.unipd.it/" target="_blank" rel="noopener" data-print-url="unipd.it">UNIPD</a>,
-                    and I hold a Master's Degree in ICT for Internet and Multimedia from the same
+                    and hold a Master's Degree in ICT for Internet and Multimedia from the same
                     university.
                 </p>
                 <p>
-                    My day-to-day is backend engineering: Java EE and Spring Boot microservices,
-                    Spring Batch ETL jobs and Apache Camel integrations running against Oracle
-                    databases in a financial context. I have also designed a cloud-agnostic
-                    architecture for IoT data analysis spanning AWS, Azure and Aruba Cloud.
+                    My focus is backend engineering: Java EE and Spring Boot microservices,
+                    Spring Batch ETL pipelines and Apache Camel integrations running against
+                    Oracle databases in a regulated financial environment. I also designed a
+                    scalable, cloud-agnostic architecture for IoT data analysis and machine
+                    learning, spanning AWS, Azure and Aruba Cloud.
                 </p>
                 <p>
-                    I am outgoing, dedicated and open-minded, comfortable owning a service
-                    end-to-end inside an Agile team and equally happy working independently.
-                    In my free time I keep up with new technologies and do powerlifting.
+                    I take services from design through testing and delivery within Agile teams,
+                    and work just as effectively on my own. I invest consistently in keeping my
+                    skill set current — most recently in cloud architecture and in applying
+                    AI-assisted development to everyday engineering work.
                 </p>
             </article>
 
@@ -384,8 +381,8 @@
 
         <div class="print-only cv-projects">
             <h3 class="cv-h3">Projects</h3>
-            <p>All my projects are on github.com/wuxyel123 — full portfolio,
-            including this site, at www.alessandrodiscalzi.com</p>
+            <p>All my projects are on github.com/wuxyel123 — full portfolio at
+            www.alessandrodiscalzi.com</p>
         </div>
 
         <div class="projects-head screen-only">
@@ -458,7 +455,7 @@
     </div>
 </footer>
 
-<script src="assets/js/main.js" defer></script>
-<script src="assets/js/githubprojects.js" defer></script>
+<script src="assets/js/main.js?v=202608131042" defer></script>
+<script src="assets/js/githubprojects.js?v=202608131042" defer></script>
 </body>
 </html>

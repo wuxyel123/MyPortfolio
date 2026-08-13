@@ -34,6 +34,15 @@
 html {
     font-size: 10.5pt;
     scroll-padding-top: 0;
+    scroll-snap-type: none;
+}
+
+/* The screen build animates these in on scroll. Kill any animation outright
+   so nothing can print mid-fade. */
+* {
+    animation: none !important;
+    transition: none !important;
+    opacity: 1 !important;
 }
 
 body {
@@ -143,6 +152,9 @@ svg[aria-hidden="true"]:not(.cv-keep) {
     margin: 0 0 2mm;
     background: none !important;
     border: 0 !important;
+    display: block;          /* screen uses flex + min-height:100svh */
+    min-height: 0;
+    scroll-snap-align: none;
 }
 
 /* Cards become plain blocks — no boxes, no shadows, no wasted margin. */
