@@ -86,6 +86,41 @@
         sections.forEach(function (section) { spy.observe(section); });
     }
 
+    /* ---------- Per-section entry animations ---------- */
+    // The .anim class is applied here rather than in the markup: if this block
+    // never runs, or IntersectionObserver is unavailable, every element keeps
+    // its normal visible style and simply does not animate.
+    (function () {
+        if (!('IntersectionObserver' in window)) return;
+
+        var sections = document.querySelectorAll('.hero, .section');
+        if (!sections.length) return;
+
+        Array.prototype.forEach.call(sections, function (section) {
+            var children = section.querySelectorAll(
+                '.hero-copy > *, .section-title, .card, .projects-head, .projects-foot'
+            );
+            Array.prototype.forEach.call(children, function (el, i) {
+                el.style.setProperty('--i', String(i));
+                el.classList.add('anim');
+            });
+        });
+
+        var spy = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+                // Removing the class on exit lets the animation replay the
+                // next time the section is scrolled back into view.
+                entry.target.classList.toggle('is-active', entry.isIntersecting);
+            });
+        }, { threshold: 0.15 });
+
+        Array.prototype.forEach.call(sections, function (s) { spy.observe(s); });
+
+        // The first section is on screen before the observer reports, so
+        // activate it immediately to avoid a visible pause on load.
+        sections[0].classList.add('is-active');
+    })();
+
     /* ---------- Print / download CV ---------- */
     Array.prototype.forEach.call(document.querySelectorAll('[data-print]'), function (btn) {
         btn.addEventListener('click', function () { window.print(); });
