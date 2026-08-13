@@ -1,5 +1,5 @@
-/* Site behaviour: theme, navigation, scrollspy, dynamic dates, contact form.
-   Vanilla JS — replaces the old jQuery/Bootstrap/affix stack. */
+/* Site behaviour: theme, navigation, the slide deck, dynamic dates and the
+   contact form. Vanilla JS — replaces the old jQuery/Bootstrap/affix stack. */
 (function () {
     'use strict';
 
@@ -54,71 +54,239 @@
         });
     }
 
-    /* ---------- Sticky header shadow ---------- */
-    var topbar = document.querySelector('.topbar');
-    if (topbar && 'IntersectionObserver' in window) {
-        var sentinel = document.createElement('div');
-        sentinel.setAttribute('aria-hidden', 'true');
-        topbar.parentNode.insertBefore(sentinel, topbar);
-        new IntersectionObserver(function (entries) {
-            topbar.classList.toggle('is-stuck', !entries[0].isIntersecting);
-        }, { threshold: 1 }).observe(sentinel);
-    }
+    /* ---------- Slide deck ---------- */
+    var deck = document.querySelector('.deck');
+    var slides = deck ? Array.prototype.slice.call(deck.querySelectorAll('.slide')) : [];
 
-    /* ---------- Scrollspy ---------- */
-    var navLinks = Array.prototype.slice.call(document.querySelectorAll('.site-nav a[href^="#"]'));
-    var sections = navLinks
-        .map(function (link) { return document.querySelector(link.getAttribute('href')); })
-        .filter(Boolean);
+    if (deck && slides.length) (function () {
+        var current = 0;
+        var busy = false;
+        var pending = 0;             // a move requested while the deck was busy
+        var DURATION = 620;          // must match --slide-dur
+        var EDGE = 2;                // px tolerance when testing inner scroll ends
 
-    if (sections.length && 'IntersectionObserver' in window) {
-        var spy = new IntersectionObserver(function (entries) {
-            entries.forEach(function (entry) {
-                if (!entry.isIntersecting) return;
-                navLinks.forEach(function (link) {
-                    link.classList.toggle(
-                        'is-active',
-                        link.getAttribute('href') === '#' + entry.target.id
-                    );
+        var reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+        function atTop(el)    { return el.scrollTop <= EDGE; }
+        function atBottom(el) { return el.scrollTop + el.clientHeight >= el.scrollHeight - EDGE; }
+
+        function setNav() {
+            var id = slides[current].id;
+            Array.prototype.forEach.call(
+                document.querySelectorAll('.site-nav a[href^="#"]'), function (a) {
+                    a.classList.toggle('is-active', a.getAttribute('href') === '#' + id);
                 });
-            });
-        }, { rootMargin: '-45% 0px -50% 0px' });
-        sections.forEach(function (section) { spy.observe(section); });
-    }
+            Array.prototype.forEach.call(
+                document.querySelectorAll('.deck-nav button'), function (b, i) {
+                    b.setAttribute('aria-current', i === current ? 'true' : 'false');
+                });
+            if (id && history.replaceState) history.replaceState(null, '', '#' + id);
+        }
 
-    /* ---------- Per-section entry animations ---------- */
-    // The .anim class is applied here rather than in the markup: if this block
-    // never runs, or IntersectionObserver is unavailable, every element keeps
-    // its normal visible style and simply does not animate.
-    (function () {
-        if (!('IntersectionObserver' in window)) return;
+        function go(next, dir) {
+            if (busy || next === current || next < 0 || next >= slides.length) return;
+            busy = true;
 
-        var sections = document.querySelectorAll('.hero, .section');
-        if (!sections.length) return;
+            var from = slides[current];
+            var to = slides[next];
+            var inCls  = dir > 0 ? 'in-down'  : 'in-up';
+            var outCls = dir > 0 ? 'out-down' : 'out-up';
 
-        Array.prototype.forEach.call(sections, function (section) {
-            var children = section.querySelectorAll(
-                '.hero-copy > *, .section-title, .card, .projects-head, .projects-foot'
-            );
-            Array.prototype.forEach.call(children, function (el, i) {
-                el.style.setProperty('--i', String(i));
-                el.classList.add('anim');
-            });
+            to.scrollTop = 0;
+            to.classList.add('is-current');
+            from.classList.add('is-leaving');
+
+            if (reduced.matches) {
+                from.classList.remove('is-current', 'is-leaving');
+                current = next;
+                setNav();
+                busy = false;
+                flushPending();
+                return;
+            }
+
+            to.classList.add(inCls);
+            from.classList.add(outCls);
+
+            window.setTimeout(function () {
+                from.classList.remove('is-current', 'is-leaving', outCls);
+                to.classList.remove(inCls);
+                to.scrollTop = 0;        // belt and braces: always land on the heading
+                current = next;
+                setNav();
+                busy = false;
+                flushPending();
+            }, DURATION);
+        }
+
+        // A swipe made during a transition used to be dropped, which is why
+        // navigating again right after changing section often did nothing.
+        // One move is remembered and replayed instead.
+        function flushPending() {
+            if (!pending) return;
+            var dir = pending;
+            pending = 0;
+            var slide = slides[current];
+            // re-check the edge: the new slide may have room to scroll
+            if (dir > 0 ? !atBottom(slide) : !atTop(slide)) return;
+            step(dir);
+        }
+
+        function step(dir) { go(current + dir, dir); }
+
+        // --- wheel / trackpad ---
+        // A flick is ONE gesture that emits dozens of events, so intent has to
+        // be tracked per gesture rather than per event. Two rules follow:
+        //
+        //  1. A gesture that begins while the slide still has room to scroll
+        //     never changes section — not even once it reaches the edge. That
+        //     is what stopped Resume and Projects from jumping to the next
+        //     section the moment you scrolled to their bottom.
+        //  2. A gesture fires at most one move, and ends once the wheel goes
+        //     quiet or the user pushes again harder (momentum only decays, so
+        //     re-acceleration means a genuine second swipe).
+        var gesture = { active: false, fired: false, canAdvance: false, dir: 0 };
+        var quietTimer = null;
+        var lastEventAt = 0;
+        var cooldownUntil = 0;
+
+        function beginGesture(down, canScrollInside) {
+            gesture.active = true;
+            gesture.fired = false;
+            gesture.canAdvance = !canScrollInside;
+            gesture.dir = down ? 1 : -1;
+        }
+
+        deck.addEventListener('wheel', function (e) {
+            var slide = slides[current];
+            var down = e.deltaY > 0;
+            var absY = Math.abs(e.deltaY);
+            var canScrollInside = down ? !atBottom(slide) : !atTop(slide);
+
+            var now = Date.now();
+            var gap = now - lastEventAt;
+            lastEventAt = now;
+
+            var reversed = gesture.active && (down ? 1 : -1) !== gesture.dir;
+
+            // A fresh push is only recognised once the cooldown has passed.
+            // Detecting it purely from delta size (momentum "re-accelerating")
+            // misfires on a fast flick, whose deltas are large and noisy — that
+            // is what made a quick swipe jump two sections at once.
+            var freshPush = gesture.fired && now >= cooldownUntil && absY >= 40;
+
+            if (!gesture.active || gap > 100 || reversed || freshPush) {
+                beginGesture(down, canScrollInside);
+            }
+
+            window.clearTimeout(quietTimer);
+            quietTimer = window.setTimeout(function () {
+                gesture.active = false;
+            }, 110);
+
+            // Once this gesture has already moved the deck, swallow the rest of
+            // its momentum. Without this the tail of the flick lands on the
+            // slide that just arrived and scrolls it down past its heading.
+            if (gesture.fired) { e.preventDefault(); return; }
+
+            // A swipe during a transition is remembered rather than dropped;
+            // flushPending re-checks the edge before replaying it.
+            if (busy) {
+                e.preventDefault();
+                gesture.fired = true;
+                pending = down ? 1 : -1;
+                return;
+            }
+
+            // Inside its own overflow the slide scrolls normally.
+            if (canScrollInside) return;
+
+            e.preventDefault();
+            if (!gesture.canAdvance || absY < 3) return;
+
+            gesture.fired = true;
+            // cooldownUntil only gates the "fresh push" heuristic above; it no
+            // longer blocks input, because blocking silently threw the swipe
+            // away instead of acting on it.
+            cooldownUntil = now + 380;
+            step(down ? 1 : -1);
+        }, { passive: false });
+
+        // --- touch ---
+        // Same rule as the wheel: whether the section may change is decided at
+        // touchstart, so a swipe that begins mid-section only scrolls.
+        var touchY = null;
+        var touchCanAdvance = false;
+
+        deck.addEventListener('touchstart', function (e) {
+            var slide = slides[current];
+            touchY = e.touches[0].clientY;
+            // record both edges now; direction is only known on touchend
+            touchCanAdvance = { top: atTop(slide), bottom: atBottom(slide) };
+        }, { passive: true });
+
+        deck.addEventListener('touchend', function (e) {
+            if (touchY === null) return;
+            var dy = touchY - e.changedTouches[0].clientY;
+            var edges = touchCanAdvance;
+            touchY = null;
+            if (Math.abs(dy) < 60 || busy || !edges) return;
+
+            var down = dy > 0;
+            if (down ? !edges.bottom : !edges.top) return;
+            step(down ? 1 : -1);
+        }, { passive: true });
+
+        // --- keyboard ---
+        document.addEventListener('keydown', function (e) {
+            if (e.target.matches('input, textarea, select')) return;
+            var slide = slides[current];
+            switch (e.key) {
+                case 'ArrowDown': case 'PageDown':
+                    if (!atBottom(slide)) return;
+                    e.preventDefault(); step(1); break;
+                case 'ArrowUp': case 'PageUp':
+                    if (!atTop(slide)) return;
+                    e.preventDefault(); step(-1); break;
+                case 'Home': e.preventDefault(); go(0, -1); break;
+                case 'End':  e.preventDefault(); go(slides.length - 1, 1); break;
+            }
         });
 
-        var spy = new IntersectionObserver(function (entries) {
-            entries.forEach(function (entry) {
-                // Removing the class on exit lets the animation replay the
-                // next time the section is scrolled back into view.
-                entry.target.classList.toggle('is-active', entry.isIntersecting);
-            });
-        }, { threshold: 0.15 });
+        // --- in-page links ---
+        document.addEventListener('click', function (e) {
+            var link = e.target.closest('a[href^="#"]');
+            if (!link) return;
+            var id = link.getAttribute('href').slice(1);
+            if (!id) return;
+            var idx = slides.indexOf(document.getElementById(id));
+            if (idx === -1) return;
+            e.preventDefault();
+            go(idx, idx > current ? 1 : -1);
+        });
 
-        Array.prototype.forEach.call(sections, function (s) { spy.observe(s); });
+        // --- progress dots ---
+        var dots = document.createElement('ul');
+        dots.className = 'deck-nav screen-only';
+        dots.setAttribute('aria-label', 'Sections');
+        slides.forEach(function (s, i) {
+            var li = document.createElement('li');
+            var b = document.createElement('button');
+            b.type = 'button';
+            b.setAttribute('aria-label', (s.id || 'Section ' + (i + 1)).replace(/^\w/, function (c) {
+                return c.toUpperCase();
+            }));
+            b.addEventListener('click', function () { go(i, i > current ? 1 : -1); });
+            li.appendChild(b);
+            dots.appendChild(li);
+        });
+        document.body.appendChild(dots);
 
-        // The first section is on screen before the observer reports, so
-        // activate it immediately to avoid a visible pause on load.
-        sections[0].classList.add('is-active');
+        // open on the slide named in the URL, if any
+        var startIdx = slides.indexOf(document.getElementById(location.hash.slice(1)));
+        current = startIdx > -1 ? startIdx : 0;
+        slides[current].classList.add('is-current');
+        setNav();
     })();
 
     /* ---------- Print / download CV ---------- */

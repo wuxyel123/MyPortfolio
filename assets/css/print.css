@@ -37,13 +37,42 @@ html {
     scroll-snap-type: none;
 }
 
-/* The screen build animates these in on scroll. Kill any animation outright
-   so nothing can print mid-fade. */
+/* The screen build animates slides in and out. Kill every animation outright
+   so nothing can print mid-transition. */
 * {
     animation: none !important;
     transition: none !important;
     opacity: 1 !important;
+    transform: none !important;
 }
+
+/* Undo the slide deck. On screen only one slide is visible and the rest are
+   absolutely positioned and hidden; printed, every section must return to
+   normal document flow or the CV comes out as a single clipped page. */
+.deck {
+    position: static !important;
+    height: auto !important;
+    overflow: visible !important;
+    perspective: none !important;
+}
+
+/* :not(.screen-only) matters — this rule sits after the .screen-only
+   display:none block, so without it the hero and contact slides would be
+   forced back into the printed CV. */
+.slide:not(.screen-only) {
+    position: static !important;
+    inset: auto !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+    visibility: visible !important;
+    display: block !important;
+    padding: 0 !important;
+    page-break-inside: auto;
+}
+
+.deck-nav { display: none !important; }
 
 body {
     margin: 0;

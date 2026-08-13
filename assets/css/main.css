@@ -57,30 +57,110 @@ html {
     /* offset for the sticky header when jumping to an anchor */
     scroll-padding-top: 84px;
     -webkit-text-size-adjust: 100%;
-
-    /* One section per swipe. Per the scroll-snap spec a snap area taller than
-       the viewport can rest anywhere inside it, so long sections (Resume,
-       Projects) still scroll normally instead of trapping the page. */
-    scroll-snap-type: y mandatory;
 }
 
-.hero,
-.section,
-.site-footer {
-    scroll-snap-align: start;
-    scroll-snap-stop: always;
+/* ---------- Slide deck ----------
+   Exactly one section on screen at a time: slides are stacked in the same
+   place and only the active one is visible, so neighbours can never peek in
+   at the edges. Long slides (Resume, Projects) scroll internally, and the
+   deck advances only once that inner scroll reaches its end. */
+.deck {
+    position: relative;
+    height: 100svh;
+    overflow: hidden;
+    perspective: 1500px;
+    perspective-origin: 50% 50%;
 }
 
-/* Full-height sections, content centred, so each snap lands on a composed
-   screen rather than mid-paragraph. Sections with more content than fits
-   simply grow past it. */
-.hero,
-.section {
-    min-height: 100svh;
+/* Child combinator so these win over the later `.section` padding rule. */
+.deck > .slide {
+    position: absolute;
+    inset: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    /* `safe` matters: with plain `center`, content taller than the slide
+       overflows equally in both directions and the top is clipped out of the
+       scroll range — the Resume heading becomes unreachable. `safe` falls
+       back to flex-start as soon as it would overflow. */
+    justify-content: safe center;
+    /* clear the fixed header */
+    padding-block: calc(68px + clamp(1.5rem, 4vw, 3rem)) clamp(1.5rem, 4vw, 3rem);
+    backface-visibility: hidden;
+    transform-style: preserve-3d;
+    will-change: transform, opacity;
 }
+
+/* Inactive slides are fully removed from view and from the tab order. */
+.slide:not(.is-current) {
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.slide.is-current { visibility: visible; z-index: 2; }
+/* the outgoing slide stays painted for the length of the transition */
+.slide.is-leaving { visibility: visible; z-index: 1; }
+
+/* ---------- Slide transition ----------
+   The deck tumbles like a die being rolled: the outgoing face pitches away
+   on the X axis while the incoming face rolls up into place. */
+/* --slide-dur must match DURATION in main.js */
+:root { --slide-dur: .62s; --slide-ease: cubic-bezier(.22, .75, .28, 1); }
+
+@keyframes tumble-in-down {
+    from { opacity: 0; transform: translateY(58%) rotateX(-62deg) scale(.84); }
+    to   { opacity: 1; transform: none; }
+}
+@keyframes tumble-out-down {
+    from { opacity: 1; transform: none; }
+    to   { opacity: 0; transform: translateY(-58%) rotateX(62deg) scale(.84); }
+}
+@keyframes tumble-in-up {
+    from { opacity: 0; transform: translateY(-58%) rotateX(62deg) scale(.84); }
+    to   { opacity: 1; transform: none; }
+}
+@keyframes tumble-out-up {
+    from { opacity: 1; transform: none; }
+    to   { opacity: 0; transform: translateY(58%) rotateX(-62deg) scale(.84); }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .slide.in-down  { animation: tumble-in-down  var(--slide-dur) var(--slide-ease) both; }
+    .slide.out-down { animation: tumble-out-down var(--slide-dur) var(--slide-ease) both; }
+    .slide.in-up    { animation: tumble-in-up    var(--slide-dur) var(--slide-ease) both; }
+    .slide.out-up   { animation: tumble-out-up   var(--slide-dur) var(--slide-ease) both; }
+}
+
+/* Progress dots */
+.deck-nav {
+    position: fixed;
+    right: clamp(.75rem, 2vw, 1.5rem);
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 90;
+    display: flex;
+    flex-direction: column;
+    gap: .7rem;
+    list-style: none;
+}
+.deck-nav button {
+    display: block;
+    width: 10px; height: 10px; padding: 0;
+    border-radius: 50%;
+    border: 1px solid var(--text-muted);
+    background: transparent;
+    cursor: pointer;
+    transition: background-color .2s ease, border-color .2s ease, transform .2s ease;
+}
+.deck-nav button[aria-current="true"] {
+    background: var(--accent);
+    border-color: var(--accent);
+    transform: scale(1.35);
+}
+.deck-nav button:hover { border-color: var(--accent); }
 
 body {
     margin: 0;
@@ -181,8 +261,10 @@ a:hover { color: var(--accent-strong); }
 :root[data-theme="dark"] .theme-toggle .ico-moon { display: block; }
 
 /* ---------- Top bar ---------- */
+/* Fixed rather than sticky: the page itself no longer scrolls — each slide
+   scrolls internally — so there is nothing for `sticky` to stick to. */
 .topbar {
-    position: sticky; top: 0; z-index: 100;
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
     background: color-mix(in srgb, var(--bg) 88%, transparent);
     backdrop-filter: saturate(180%) blur(12px);
     border-bottom: 1px solid transparent;
@@ -309,7 +391,9 @@ a:hover { color: var(--accent-strong); }
 
 /* ---------- Sections ---------- */
 .section { padding: var(--step) 0; }
-.section-alt { background: var(--bg-alt); border-block: 1px solid var(--border); }
+.section-alt { background: var(--bg-alt); }
+/* Edge borders make no sense on a full-screen slide. */
+.deck > .section-alt { border-block: 0; }
 
 .section-title {
     font-size: clamp(1.75rem, 3.4vw, 2.4rem);
@@ -512,6 +596,16 @@ a:hover { color: var(--accent-strong); }
     background: var(--bg); border-top: 1px solid var(--border);
     color: var(--text-muted); font-size: .88rem;
 }
+
+/* Inside the deck the footer rides along at the bottom of the Contact slide.
+   At full padding that slide overflowed by ~23px — just enough to become
+   scrollable, so swiping up spent the first gesture on those few pixels
+   instead of changing section. Trimming it lets Contact fit exactly. */
+.deck .site-footer {
+    padding: 1.1rem 0 0;
+    background: transparent;
+    margin-top: auto;
+}
 .footer-inner {
     display: flex; flex-wrap: wrap; gap: 1rem;
     align-items: center; justify-content: space-between;
@@ -579,25 +673,10 @@ a:hover { color: var(--accent-strong); }
    so a browser without them simply shows the content — the animation can
    never be the reason something is invisible. No JS is involved, so it also
    survives a script failure. */
-@keyframes reveal-in {
-    from { opacity: 0; transform: translateY(26px); }
-    to   { opacity: 1; transform: none; }
-}
-
-/* Time-based, not scroll-linked. A view() timeline advances with scroll
-   position, so when a snap jumps a whole section in a few frames the
-   animation completes instantly and is never seen — the two features fight
-   each other. Playing on section activation instead gives a real duration.
-
-   .anim is added by JS and only animates while its section has .is-active,
-   so an element that is never activated keeps its normal, visible style.
-   Worst case is "no animation", never "invisible content". */
-@media (prefers-reduced-motion: no-preference) {
-    .is-active .anim {
-        animation: reveal-in .6s cubic-bezier(.22, .68, .36, 1) both;
-        animation-delay: calc(var(--i, 0) * 90ms);
-    }
-}
+/* There is deliberately no separate per-element reveal here. Staggering the
+   children ran *after* the slide transition, so the section arrived and then
+   its contents blinked out and back in. The tumble carries the whole slide as
+   one solid face instead. */
 
 @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; scroll-snap-type: none; }

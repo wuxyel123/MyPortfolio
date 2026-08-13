@@ -27,8 +27,8 @@
     <link rel="icon" href="assets/imgs/favicon.png" type="image/png">
     <link rel="apple-touch-icon" href="assets/imgs/avatar_head.jpg">
 
-    <link rel="stylesheet" href="assets/css/main.css?v=202608131047">
-    <link rel="stylesheet" href="assets/css/print.css?v=202608131047" media="print">
+    <link rel="stylesheet" href="assets/css/main.css?v=202608131136">
+    <link rel="stylesheet" href="assets/css/print.css?v=202608131136" media="print">
     <link rel="preconnect" href="https://api.github.com">
 
     <!-- Applied before first paint to avoid a light flash on dark-theme loads -->
@@ -116,7 +116,30 @@
 </header>
 
 <!-- ============ HERO ============ -->
-<section class="hero screen-only" id="top">
+
+<!-- ============ PRINT-ONLY CV HEADER ============ -->
+<header class="cv-head print-only">
+    <img src="assets/imgs/avatar_head.jpg" alt="" class="cv-photo">
+    <div class="cv-head-text">
+        <h1>Alessandro Discalzi</h1>
+        <p class="cv-role">Software Engineer</p>
+        <ul class="cv-contact">
+            <li>alessandrodiscalzi98@gmail.com</li>
+            <li>+39 389 117 3437</li>
+            <li>Padua, Veneto, Italy</li>
+            <li>Italian &middot; born 23/10/1998</li>
+            <li>linkedin.com/in/alessandro-discalzi</li>
+            <li>github.com/wuxyel123</li>
+            <li>www.alessandrodiscalzi.com</li>
+        </ul>
+    </div>
+</header>
+
+<main id="main">
+
+<div class="deck">
+
+<section class="hero slide screen-only" id="top">
     <div class="wrap hero-inner">
         <div class="hero-copy">
             <img class="hero-avatar" src="assets/imgs/avatar_head.jpg"
@@ -147,28 +170,8 @@
     </div>
 </section>
 
-<!-- ============ PRINT-ONLY CV HEADER ============ -->
-<header class="cv-head print-only">
-    <img src="assets/imgs/avatar_head.jpg" alt="" class="cv-photo">
-    <div class="cv-head-text">
-        <h1>Alessandro Discalzi</h1>
-        <p class="cv-role">Software Engineer</p>
-        <ul class="cv-contact">
-            <li>alessandrodiscalzi98@gmail.com</li>
-            <li>+39 389 117 3437</li>
-            <li>Padua, Veneto, Italy</li>
-            <li>Italian &middot; born 23/10/1998</li>
-            <li>linkedin.com/in/alessandro-discalzi</li>
-            <li>github.com/wuxyel123</li>
-            <li>www.alessandrodiscalzi.com</li>
-        </ul>
-    </div>
-</header>
-
-<main id="main">
-
 <!-- ============ ABOUT ============ -->
-<section class="section" id="about">
+<section class="section slide" id="about">
     <div class="wrap">
         <h2 class="section-title"><span class="accent">About</span> me</h2>
 
@@ -217,7 +220,7 @@
 </section>
 
 <!-- ============ RESUME ============ -->
-<section class="section section-alt" id="resume">
+<section class="section slide section-alt" id="resume">
     <div class="wrap">
         <h2 class="section-title"><span class="accent">My</span> Resume</h2>
 
@@ -375,7 +378,7 @@
 </section>
 
 <!-- ============ PROJECTS ============ -->
-<section class="section" id="projects">
+<section class="section slide" id="projects">
     <div class="wrap">
         <h2 class="section-title"><span class="accent">My</span> Projects</h2>
 
@@ -405,7 +408,7 @@
 </section>
 
 <!-- ============ CONTACT ============ -->
-<section class="section section-alt screen-only" id="contact">
+<section class="section slide section-alt screen-only" id="contact">
     <div class="wrap">
         <h2 class="section-title"><span class="accent">Get in</span> touch</h2>
 
@@ -440,10 +443,6 @@
             </div>
         </div>
     </div>
-</section>
-
-</main>
-
 <footer class="site-footer screen-only">
     <div class="wrap footer-inner">
         <p>&copy; <span data-year>2026</span> Alessandro Discalzi</p>
@@ -455,7 +454,15 @@
     </div>
 </footer>
 
-<script src="assets/js/main.js?v=202608131047" defer></script>
-<script src="assets/js/githubprojects.js?v=202608131047" defer></script>
+</section>
+
+
+</div><!-- /.deck -->
+
+</main>
+
+
+<script src="assets/js/main.js?v=202608131136" defer></script>
+<script src="assets/js/githubprojects.js?v=202608131136" defer></script>
 </body>
 </html>
