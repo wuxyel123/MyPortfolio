@@ -5,9 +5,12 @@
 (function () {
     'use strict';
 
-    var USERNAME   = 'wuxyel123';
-    var PER_PAGE   = 100;
-    var HIDE_FORKS = false;
+    var USERNAME  = 'wuxyel123';
+    var PER_PAGE  = 100;
+    // Built by tools/build-projects.py: the repositories with commits authored
+    // by USERNAME. Reading it costs no GitHub API calls, so the list cannot be
+    // rate limited for visitors — and it excludes forks never contributed to.
+    var DATA_FILE = 'projects.json';
 
     var list       = document.querySelector('.repo-list');
     var filterInput = document.querySelector('.filter-repos');
@@ -74,7 +77,7 @@
 
             var h3 = document.createElement('h3');
             var titleLink = document.createElement('a');
-            titleLink.href = repo.html_url;
+            titleLink.href = repo.url;
             titleLink.target = '_blank';
             titleLink.rel = 'noopener';
             titleLink.textContent = repo.name;
@@ -95,17 +98,17 @@
                 dot.style.background = LANG_COLORS[repo.language] || '';
                 meta.appendChild(metaItem(dot, repo.language));
             }
-            if (repo.stargazers_count > 0) {
-                meta.appendChild(metaItem(icon('i-star'), String(repo.stargazers_count)));
+            if (repo.stars > 0) {
+                meta.appendChild(metaItem(icon('i-star'), String(repo.stars)));
             }
-            if (repo.forks_count > 0) {
-                meta.appendChild(metaItem(icon('i-fork'), String(repo.forks_count)));
+            if (repo.forks > 0) {
+                meta.appendChild(metaItem(icon('i-fork'), String(repo.forks)));
             }
             if (meta.childNodes.length) li.appendChild(meta);
 
             var links = document.createElement('div');
             links.className = 'repo-links';
-            links.appendChild(linkButton(repo.html_url, 'Code', 'btn-outline'));
+            links.appendChild(linkButton(repo.url, 'Code', 'btn-outline'));
 
             // Ignore a homepage that just points back at this site.
             var home = (repo.homepage || '').trim();
@@ -118,9 +121,19 @@
         });
     }
 
-    function getRepos() {
-        status('Loading projects…');
+    function done(repos) {
+        render(repos);
+        if (filterInput) filterInput.disabled = false;
+    }
 
+    function fail(message) {
+        status(message + ' See them at github.com/' + USERNAME);
+    }
+
+    // Fallback for local development, where projects.json has not been built.
+    // Unfiltered — it cannot tell which forks were contributed to without a
+    // request per repository, which would exhaust the visitor's rate limit.
+    function getReposFromApi() {
         fetch('https://api.github.com/users/' + USERNAME +
               '/repos?sort=pushed&per_page=' + PER_PAGE)
             .then(function (res) {
@@ -130,25 +143,41 @@
             })
             .then(function (repos) {
                 if (!Array.isArray(repos)) throw new Error('bad-payload');
-
-                repos = repos.filter(function (repo) {
-                    return !(repo.fork && HIDE_FORKS) && !repo.archived;
-                });
-                // Most-noticed first, then most recently pushed.
+                repos = repos.filter(function (repo) { return !repo.archived; });
                 repos.sort(function (a, b) {
                     return (b.stargazers_count - a.stargazers_count)
                         || (b.forks_count - a.forks_count)
                         || (new Date(b.pushed_at) - new Date(a.pushed_at));
                 });
-
-                render(repos);
-                if (filterInput) filterInput.disabled = false;
+                done(repos.map(function (r) {
+                    return {
+                        name: r.name, url: r.html_url,
+                        description: r.description || '', language: r.language || '',
+                        stars: r.stargazers_count, forks: r.forks_count,
+                        homepage: r.homepage || ''
+                    };
+                }));
             })
             .catch(function (err) {
-                status(err.message === 'rate-limit'
-                    ? 'GitHub’s API is rate limited right now. See the projects directly at github.com/' + USERNAME
-                    : 'Could not load projects from GitHub. See them at github.com/' + USERNAME);
+                fail(err.message === 'rate-limit'
+                    ? 'GitHub’s API is rate limited right now.'
+                    : 'Could not load projects from GitHub.');
             });
+    }
+
+    function getRepos() {
+        status('Loading projects…');
+
+        fetch(DATA_FILE, { cache: 'no-cache' })
+            .then(function (res) {
+                if (!res.ok) throw new Error('no-data-file');
+                return res.json();
+            })
+            .then(function (payload) {
+                if (!payload || !Array.isArray(payload.repos)) throw new Error('bad-payload');
+                done(payload.repos);
+            })
+            .catch(getReposFromApi);
     }
 
     if (filterInput) {

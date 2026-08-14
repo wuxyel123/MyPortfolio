@@ -7,3 +7,5 @@
 LinkedIn_Job_Search/
 OriginalTemplate.zip
 _site/
+__pycache__/
+*.pyc
