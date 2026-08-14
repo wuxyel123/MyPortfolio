@@ -321,44 +321,4 @@
         if (years > 0) el.textContent = String(years);
     });
 
-    /* ---------- Contact form (loaded on demand) ---------- */
-    var formHost = document.getElementById('hubspot-form');
-
-    function loadHubspot() {
-        var script = document.createElement('script');
-        script.src = 'https://js-eu1.hsforms.net/forms/embed/v2.js';
-        script.charset = 'utf-8';
-        script.async = true;
-        script.onload = function () {
-            if (!window.hbspt) return;
-            window.hbspt.forms.create({
-                region: 'eu1',
-                portalId: '26284719',
-                formId: '551d968c-eaaa-45b3-a1b7-f51943572586',
-                target: '#hubspot-form'
-            });
-        };
-        script.onerror = function () {
-            formHost.innerHTML = '<p>The contact form failed to load. '
-                + 'Please email me at <a href="mailto:alessandrodiscalzi98@gmail.com">'
-                + 'alessandrodiscalzi98@gmail.com</a>.</p>';
-        };
-        document.head.appendChild(script);
-    }
-
-    // Deferred to idle rather than to an IntersectionObserver: the form host is
-    // an empty (zero-height) div, which is exactly the case where observers are
-    // least predictable, and a contact form that silently never appears is a
-    // worse failure than loading one script a moment early.
-    if (formHost) {
-        var startForm = function () {
-            if (window.requestIdleCallback) {
-                window.requestIdleCallback(loadHubspot, { timeout: 3000 });
-            } else {
-                setTimeout(loadHubspot, 1200);
-            }
-        };
-        if (document.readyState === 'complete') startForm();
-        else window.addEventListener('load', startForm);
-    }
 })();

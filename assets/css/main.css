@@ -569,12 +569,18 @@ a:hover { color: var(--accent-strong); }
 .projects-foot { margin-top: 2rem; text-align: center; }
 
 /* ---------- Contact ---------- */
-.contact-grid {
-    display: grid; gap: 1.5rem;
-    grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
-    align-items: start;
+/* No form any more: the section leads with the email address itself. */
+.contact-lede { max-width: 46ch; margin: 0 0 1.75rem; }
+.contact-cta { margin: 0 0 2.5rem; }
+.contact-cta .btn { font-size: 1.02rem; padding: .85rem 1.6rem; }
+.contact-cta .btn span { overflow-wrap: anywhere; }
+.contact-hint { margin-top: 2rem; }
+
+.contact-list {
+    list-style: none;
+    display: grid; gap: 1.1rem;
+    grid-template-columns: repeat(auto-fit, minmax(220px, max-content));
 }
-.contact-list { list-style: none; display: grid; gap: 1.1rem; }
 .contact-list li { display: flex; gap: .85rem; align-items: flex-start; }
 .contact-list .ico { color: var(--accent); margin-top: .25rem; width: 19px; height: 19px; }
 .contact-list div { display: grid; gap: .1rem; min-width: 0; }
@@ -583,12 +589,6 @@ a:hover { color: var(--accent-strong); }
     text-transform: uppercase; color: var(--text-muted);
 }
 .contact-list a { overflow-wrap: anywhere; }
-.contact-info .hint { margin-top: 1.4rem; }
-
-/* HubSpot renders the form inside a cross-origin iframe, so its fields cannot
-   be styled from here — only the container can. */
-#hubspot-form { min-height: 320px; }
-#hubspot-form iframe { width: 100% !important; border: 0; display: block; }
 
 /* ---------- Footer ---------- */
 .site-footer {
@@ -618,8 +618,7 @@ a:hover { color: var(--accent-strong); }
 /* ---------- Responsive ---------- */
 @media (max-width: 960px) {
     .resume-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .about-grid,
-    .contact-grid { grid-template-columns: 1fr; }
+    .about-grid { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 780px) {
