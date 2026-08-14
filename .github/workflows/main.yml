@@ -6,9 +6,10 @@ on:
       - master
       - main
   # The project list is generated at build time, so a periodic run keeps it in
-  # step with GitHub without needing a commit.
+  # step with GitHub without needing a commit. Daily, so a new repository shows
+  # up within a day rather than within a week.
   schedule:
-    - cron: '0 6 * * 1'          # Mondays, 06:00 UTC
+    - cron: '0 6 * * *'          # every day, 06:00 UTC
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 

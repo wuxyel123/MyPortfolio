@@ -120,8 +120,8 @@ def main():
         if not TOKEN:
             time.sleep(0.4)          # be gentle when unauthenticated
 
-    # most-noticed first, then most recently worked on
-    kept.sort(key=lambda r: (-r["stars"], -r["forks"], r["pushed_at"]), reverse=False)
+    # most-noticed first, then most recently worked on. pushed_at is an ISO
+    # timestamp, so a plain reverse string sort puts the newest first.
     kept.sort(key=lambda r: (r["stars"], r["forks"], r["pushed_at"]), reverse=True)
 
     payload = {"generated": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
