@@ -8,39 +8,75 @@
     <meta name="theme-color" content="#0b1120" media="(prefers-color-scheme: dark)">
     <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
     <link rel="icon" href="/assets/imgs/favicon.png" type="image/png">
-    <link rel="stylesheet" href="/assets/css/main.css">
-    <script>
-        (function () {
-            var stored = null;
-            try { stored = localStorage.getItem('theme'); } catch (e) { /* private mode */ }
-            var dark = stored ? stored === 'dark'
-                : window.matchMedia('(prefers-color-scheme: dark)').matches;
-            document.documentElement.dataset.theme = dark ? 'dark' : 'light';
-        })();
-    </script>
+
+    <!--
+      Deliberately self-contained: no link to main.css, no external anything.
+
+      An error page is shown precisely when something is missing, so depending
+      on another file to style it is the wrong bet. It also has to survive being
+      served for a URL at any depth — Apache returns this document for
+      /a/b/c too, and a relative asset path would then resolve against /a/b/,
+      while an absolute one breaks when the file is opened straight from disk.
+      Inlining sidesteps both. The tokens below mirror main.css.
+    -->
     <style>
-        /* Standalone page — no slide deck, so it brings its own layout. */
+        :root {
+            --bg:            #ffffff;
+            --bg-alt:        #f6f7f9;
+            --surface:       #ffffff;
+            --text:          #10151f;
+            --text-muted:    #5b6676;
+            --border:        #e3e7ed;
+            --accent:        #c2410c;
+            --accent-strong: #9a3412;
+            --accent-soft:   #fef1e9;
+            --shadow-lg:     0 2px 4px rgba(16, 21, 31, .06), 0 24px 48px -24px rgba(16, 21, 31, .35);
+            --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+                         "Helvetica Neue", Arial, sans-serif;
+            --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg:            #0b1120;
+                --bg-alt:        #0f1626;
+                --surface:       #121a2b;
+                --text:          #e6ebf3;
+                --text-muted:    #9aa8bd;
+                --border:        #22304a;
+                --accent:        #fb923c;
+                --accent-strong: #fdba74;
+                --accent-soft:   rgba(251, 146, 60, .12);
+                --shadow-lg:     0 2px 4px rgba(0, 0, 0, .45), 0 24px 48px -24px rgba(0, 0, 0, .8);
+                color-scheme: dark;
+            }
+        }
+
+        *, *::before, *::after { box-sizing: border-box; }
+
         body {
+            margin: 0;
             min-height: 100svh;
             display: grid;
             place-items: center;
             padding: 2rem 1.25rem;
             overflow-x: hidden;
+            font-family: var(--font-sans);
+            color: var(--text);
             background:
                 radial-gradient(900px 500px at 50% -10%, var(--accent-soft), transparent 68%),
                 linear-gradient(180deg, var(--bg-alt), var(--bg));
+            -webkit-font-smoothing: antialiased;
         }
 
         .oops {
-            position: relative;
             width: min(100%, 30rem);
             text-align: center;
             padding: clamp(2.25rem, 6vw, 3.25rem) clamp(1.5rem, 5vw, 3rem) clamp(2rem, 5vw, 2.75rem);
-            background: color-mix(in srgb, var(--surface) 82%, transparent);
+            background: var(--surface);
             border: 1px solid var(--border);
             border-radius: 22px;
             box-shadow: var(--shadow-lg);
-            backdrop-filter: blur(10px);
             animation: rise .55s cubic-bezier(.22, .75, .28, 1) both;
         }
 
@@ -53,9 +89,10 @@
             width: 76px; height: 76px;
             border-radius: 50%;
             object-fit: cover;
+            display: block;
             margin: 0 auto 1.5rem;
             border: 3px solid var(--surface);
-            box-shadow: 0 0 0 1px var(--border), var(--shadow);
+            box-shadow: 0 0 0 1px var(--border);
         }
 
         /* .oops .oops-code, never .oops-code: the numeral is a <p>, so the
@@ -80,18 +117,39 @@
 
         .oops h1 {
             font-size: clamp(1.15rem, 3.6vw, 1.4rem);
-            margin: 1.1rem 0 .55rem;
+            font-weight: 700;
             letter-spacing: -.01em;
+            margin: 1.1rem 0 .55rem;
         }
 
         .oops p {
             color: var(--text-muted);
             font-size: .95rem;
+            line-height: 1.6;
             margin: 0 auto;
             max-width: 30ch;
         }
 
-        .oops .btn { margin-top: 1.9rem; }
+        .oops a {
+            display: inline-flex;
+            align-items: center;
+            margin-top: 1.9rem;
+            padding: .68rem 1.35rem;
+            border-radius: 999px;
+            background: var(--accent);
+            color: #fff;
+            font-weight: 600;
+            font-size: .95rem;
+            text-decoration: none;
+            transition: background-color .15s ease, transform .12s ease;
+        }
+        .oops a:hover { background: var(--accent-strong); }
+        .oops a:active { transform: translateY(1px); }
+        .oops a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+        @media (prefers-color-scheme: dark) {
+            .oops a { color: #1a1005; }
+        }
 
         @media (prefers-reduced-motion: reduce) {
             .oops { animation: none; }
@@ -100,14 +158,17 @@
 </head>
 <body>
     <main class="oops">
+        <!-- Absolute so it resolves for a 404 served at any depth. Hidden if it
+             cannot load, rather than leaving a broken-image icon. -->
         <img class="oops-avatar" src="/assets/imgs/avatar_head.jpg"
-             alt="Alessandro Discalzi" width="360" height="360">
+             alt="Alessandro Discalzi" width="360" height="360"
+             onerror="this.style.display='none'">
 
         <p class="oops-code">404</p>
         <h1>This page does not exist</h1>
         <p>The link may be out of date, or I moved something.</p>
 
-        <a class="btn btn-primary" href="/">Back to the site</a>
+        <a href="/">Back to the site</a>
     </main>
 </body>
 </html>
