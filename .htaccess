@@ -101,10 +101,15 @@
 # outright. THE_REQUEST is matched so the rewrite sees the original URL and
 # not the one DirectoryIndex rewrote internally — matching on the path alone
 # would send / into an infinite redirect.
+#
+# The target is absolute and https on purpose. With a relative "/" Apache
+# expands it using its own view of the scheme, and behind Aruba's
+# TLS-terminating proxy that is plain http — so the redirect advertised
+# http://, downgrading the scheme and adding a hop.
 <IfModule mod_rewrite.c>
     RewriteEngine On
     RewriteCond %{THE_REQUEST} \s/+index\.html[\s?] [NC]
-    RewriteRule ^ / [R=301,L]
+    RewriteRule ^ https://www.alessandrodiscalzi.com/ [R=301,L]
 </IfModule>
 
 # Branded 404 instead of the host's default Apache page.
