@@ -69,29 +69,34 @@ jobs:
           sleep 0.5
         done
         google-chrome --headless --disable-gpu --no-sandbox \
-          --no-pdf-header-footer --print-to-pdf=_site/cv.pdf \
-          http://localhost:8099/
+          --virtual-time-budget=8000 --no-pdf-header-footer \
+          --print-to-pdf=_site/cv.pdf http://localhost:8099/
         ls -la _site/cv.pdf
 
     # og:image wants roughly 1200x630. Pointing it at the 360px avatar made
     # LinkedIn and WhatsApp render a small square thumbnail or drop it entirely.
+    #
+    # Shipped as PNG straight from Chrome. Converting to JPEG needed Pillow,
+    # which ubuntu-latest does not ship — that import failed the job, and since
+    # this step runs before the sync, nothing deployed at all.
+    #
+    # virtual-time-budget is required: without it Chrome captures before the
+    # avatar has decoded and the card renders with an empty circle.
     - name: 🖼️ Render the social preview card
       run: |
         set -euo pipefail
-        mkdir -p _ogtmp
-        cp tools/og-card.html assets/imgs/avatar_head.jpg _ogtmp/
         google-chrome --headless --disable-gpu --no-sandbox --hide-scrollbars \
-          --window-size=1200,630 --screenshot=_ogtmp/og.png \
-          "file://$PWD/_ogtmp/og-card.html"
-        python3 - <<'PY'
-        from PIL import Image
-        im = Image.open('_ogtmp/og.png')
-        assert im.size == (1200, 630), im.size
-        im.convert('RGB').save('_site/assets/imgs/og.jpg', 'JPEG',
-                               quality=88, optimize=True)
-        PY
-        rm -rf _ogtmp
-        ls -la _site/assets/imgs/og.jpg
+          --virtual-time-budget=5000 --window-size=1200,630 \
+          --screenshot=_site/assets/imgs/og.png \
+          "file://$PWD/tools/og-card.html"
+        ls -la _site/assets/imgs/og.png
+        python3 -c "
+        import struct
+        d = open('_site/assets/imgs/og.png','rb').read()
+        w, h = struct.unpack('>II', d[16:24])
+        print('og.png is %dx%d' % (w, h))
+        assert (w, h) == (1200, 630), 'unexpected card size'
+        "
 
     - name: 📦 Publishing
       run: |
