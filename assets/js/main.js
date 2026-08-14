@@ -298,11 +298,6 @@
         setNav();
     })();
 
-    /* ---------- Print / download CV ---------- */
-    Array.prototype.forEach.call(document.querySelectorAll('[data-print]'), function (btn) {
-        btn.addEventListener('click', function () { window.print(); });
-    });
-
     /* ---------- Dynamic dates ---------- */
     // Footer year.
     Array.prototype.forEach.call(document.querySelectorAll('[data-year]'), function (el) {

@@ -89,5 +89,8 @@
     DirectoryIndex index.html
 </IfModule>
 
+# Branded 404 instead of the host's default Apache page.
+ErrorDocument 404 /404.html
+
 # No directory listings anywhere.
 Options -Indexes

@@ -31,7 +31,7 @@ jobs:
         rm -rf _site
         mkdir -p _site/assets/imgs
 
-        cp index.html .htaccess robots.txt sitemap.xml humans.txt _site/
+        cp index.html 404.html .htaccess robots.txt humans.txt _site/
         cp -R assets/css _site/assets/
         cp -R assets/js  _site/assets/
 
@@ -39,8 +39,10 @@ jobs:
         cp assets/imgs/avatar_head.jpg _site/assets/imgs/
         cp assets/imgs/favicon.png     _site/assets/imgs/
 
-        echo "--- publishing $(find _site -type f | wc -l) files ---"
-        true
+        # sitemap carries the deploy date rather than a hardcoded one
+        sed "s|<lastmod>[^<]*</lastmod>|<lastmod>$(date -u +%F)</lastmod>|" \
+            sitemap.xml > _site/sitemap.xml
+        grep -o '<lastmod>[^<]*</lastmod>' _site/sitemap.xml
 
     # Deciding "did I actually contribute?" costs one API call per repository.
     # Doing that in the browser would be ~19 unauthenticated calls against a
@@ -52,6 +54,47 @@ jobs:
       run: |
         set -euo pipefail
         python3 tools/build-projects.py _site/projects.json
+
+    # The CV was previously only obtainable through the browser's print dialog,
+    # which also meant no URL to paste into an application form. Rendering it
+    # here uses the same print.css, so the file matches what printing produces.
+    - name: 📄 Render the CV to PDF
+      run: |
+        set -euo pipefail
+        python3 -m http.server 8099 --directory _site &>/dev/null &
+        SERVER=$!
+        trap 'kill $SERVER 2>/dev/null || true' EXIT
+        for i in $(seq 1 30); do
+          curl -sf http://localhost:8099/ -o /dev/null && break
+          sleep 0.5
+        done
+        google-chrome --headless --disable-gpu --no-sandbox \
+          --no-pdf-header-footer --print-to-pdf=_site/cv.pdf \
+          http://localhost:8099/
+        ls -la _site/cv.pdf
+
+    # og:image wants roughly 1200x630. Pointing it at the 360px avatar made
+    # LinkedIn and WhatsApp render a small square thumbnail or drop it entirely.
+    - name: 🖼️ Render the social preview card
+      run: |
+        set -euo pipefail
+        mkdir -p _ogtmp
+        cp tools/og-card.html assets/imgs/avatar_head.jpg _ogtmp/
+        google-chrome --headless --disable-gpu --no-sandbox --hide-scrollbars \
+          --window-size=1200,630 --screenshot=_ogtmp/og.png \
+          "file://$PWD/_ogtmp/og-card.html"
+        python3 - <<'PY'
+        from PIL import Image
+        im = Image.open('_ogtmp/og.png')
+        assert im.size == (1200, 630), im.size
+        im.convert('RGB').save('_site/assets/imgs/og.jpg', 'JPEG',
+                               quality=88, optimize=True)
+        PY
+        rm -rf _ogtmp
+        ls -la _site/assets/imgs/og.jpg
+
+    - name: 📦 Publishing
+      run: |
         echo "--- publishing $(find _site -type f | wc -l) files ---"
         find _site -type f | sort
         du -sh _site

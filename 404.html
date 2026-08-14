@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Page not found — Alessandro Discalzi</title>
+    <meta name="robots" content="noindex">
+    <link rel="icon" href="/assets/imgs/favicon.png" type="image/png">
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <script>
+        (function () {
+            var stored = null;
+            try { stored = localStorage.getItem('theme'); } catch (e) { /* private mode */ }
+            var dark = stored ? stored === 'dark'
+                : window.matchMedia('(prefers-color-scheme: dark)').matches;
+            document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+        })();
+    </script>
+    <style>
+        /* Standalone page: no slide deck, just a centred column. */
+        body { min-height: 100svh; display: grid; place-items: center; text-align: center; }
+        .oops { padding: 2rem 0; }
+        .oops h1 { font-size: clamp(1.4rem, 4vw, 2rem); margin: .6rem 0 .5rem; }
+        .oops p { color: var(--text-muted); max-width: 44ch; margin-inline: auto; }
+        /* .oops .oops-code, not .oops-code: the digits are a <p>, so the rule
+           above would otherwise win on specificity and mute them. */
+        .oops .oops-code {
+            font-family: var(--font-mono);
+            font-size: clamp(3.5rem, 14vw, 7rem);
+            line-height: 1; color: var(--accent); margin: 0;
+            letter-spacing: -.04em;
+        }
+        .oops .btn { margin-top: 1.8rem; }
+    </style>
+</head>
+<body>
+    <main class="wrap oops">
+        <p class="oops-code">404</p>
+        <h1>This page does not exist</h1>
+        <p>The link may be out of date, or I may have moved something. Everything
+           lives on one page, so the front page has all of it.</p>
+        <p><a class="btn btn-primary" href="/">Back to the site</a></p>
+    </main>
+</body>
+</html>
