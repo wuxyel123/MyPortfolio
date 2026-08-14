@@ -59,6 +59,11 @@
     var slides = deck ? Array.prototype.slice.call(deck.querySelectorAll('.slide')) : [];
 
     if (deck && slides.length) (function () {
+        // Opt into the deck layout. Everything deck-specific in main.css is
+        // gated on this class, so if this script never runs the page stays a
+        // plain scrolling document rather than rendering blank.
+        deck.classList.add('is-enhanced');
+
         var current = 0;
         var busy = false;
         var pending = 0;             // a move requested while the deck was busy

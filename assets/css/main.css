@@ -63,8 +63,16 @@ html {
    Exactly one section on screen at a time: slides are stacked in the same
    place and only the active one is visible, so neighbours can never peek in
    at the edges. Long slides (Resume, Projects) scroll internally, and the
-   deck advances only once that inner scroll reaches its end. */
-.deck {
+   deck advances only once that inner scroll reaches its end.
+
+   Every rule here is gated on .is-enhanced, which main.js adds. Without it
+   the page stays an ordinary scrolling document: the deck depends on JS to
+   mark a slide current, so ungated these rules hid *everything* when scripts
+   did not run — blank for Bing, LinkedIn's preview bot and anything else that
+   does not execute JS, and blank for visitors if main.js ever fails. */
+.deck:not(.is-enhanced) { padding-top: 68px; }   /* clear the fixed header */
+
+.deck.is-enhanced {
     position: relative;
     height: 100svh;
     overflow: hidden;
@@ -73,7 +81,7 @@ html {
 }
 
 /* Child combinator so these win over the later `.section` padding rule. */
-.deck > .slide {
+.deck.is-enhanced > .slide {
     position: absolute;
     inset: 0;
     overflow-y: auto;
@@ -95,14 +103,14 @@ html {
 }
 
 /* Inactive slides are fully removed from view and from the tab order. */
-.slide:not(.is-current) {
+.deck.is-enhanced .slide:not(.is-current) {
     visibility: hidden;
     pointer-events: none;
 }
 
-.slide.is-current { visibility: visible; z-index: 2; }
+.deck.is-enhanced .slide.is-current { visibility: visible; z-index: 2; }
 /* the outgoing slide stays painted for the length of the transition */
-.slide.is-leaving { visibility: visible; z-index: 1; }
+.deck.is-enhanced .slide.is-leaving { visibility: visible; z-index: 1; }
 
 /* ---------- Slide transition ----------
    The deck tumbles like a die being rolled: the outgoing face pitches away
