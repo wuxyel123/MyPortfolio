@@ -74,6 +74,13 @@
     Header set X-Content-Type-Options "nosniff"
     Header set Referrer-Policy "strict-origin-when-cross-origin"
     Header always unset X-Powered-By
+
+    # HSTS. Deliberately a short max-age (1 day) rather than the usual year:
+    # browsers cache this and will then REFUSE to connect over http, so a
+    # future certificate problem would lock visitors out for the whole
+    # duration. Raise it to 31536000 once this has run without trouble.
+    # Only sent over https, per the spec.
+    Header always set Strict-Transport-Security "max-age=86400" env=HTTPS
 </IfModule>
 
 # ---------------------------------------------------------------------------
@@ -87,6 +94,17 @@
 
 <IfModule mod_dir.c>
     DirectoryIndex index.html
+</IfModule>
+
+# /index.html and / served the same page under two URLs. The canonical tag
+# already told search engines which to prefer; this removes the duplicate
+# outright. THE_REQUEST is matched so the rewrite sees the original URL and
+# not the one DirectoryIndex rewrote internally — matching on the path alone
+# would send / into an infinite redirect.
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{THE_REQUEST} \s/+index\.html[\s?] [NC]
+    RewriteRule ^ / [R=301,L]
 </IfModule>
 
 # Branded 404 instead of the host's default Apache page.
