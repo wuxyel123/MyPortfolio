@@ -19,79 +19,95 @@
         })();
     </script>
     <style>
-        /* Standalone page — no slide deck, so it brings its own layout. The
-           glow and card styling are lifted from the hero so a wrong URL still
-           looks like part of the site. */
+        /* Standalone page — no slide deck, so it brings its own layout. */
         body {
             min-height: 100svh;
             display: grid;
             place-items: center;
-            padding: 2rem 0;
+            padding: 2rem 1.25rem;
+            overflow-x: hidden;
             background:
-                radial-gradient(820px 420px at 50% 0%, var(--accent-soft), transparent 65%),
+                radial-gradient(900px 500px at 50% -10%, var(--accent-soft), transparent 68%),
                 linear-gradient(180deg, var(--bg-alt), var(--bg));
         }
 
-        .oops { text-align: center; }
+        .oops {
+            position: relative;
+            width: min(100%, 30rem);
+            text-align: center;
+            padding: clamp(2.25rem, 6vw, 3.25rem) clamp(1.5rem, 5vw, 3rem) clamp(2rem, 5vw, 2.75rem);
+            background: color-mix(in srgb, var(--surface) 82%, transparent);
+            border: 1px solid var(--border);
+            border-radius: 22px;
+            box-shadow: var(--shadow-lg);
+            backdrop-filter: blur(10px);
+            animation: rise .55s cubic-bezier(.22, .75, .28, 1) both;
+        }
+
+        @keyframes rise {
+            from { opacity: 0; transform: translateY(14px) scale(.985); }
+            to   { opacity: 1; transform: none; }
+        }
 
         .oops-avatar {
-            width: 96px; height: 96px;
+            width: 76px; height: 76px;
             border-radius: 50%;
             object-fit: cover;
-            margin: 0 auto 1.75rem;
-            border: 4px solid var(--surface);
-            box-shadow: 0 0 0 1px var(--border), var(--shadow-lg);
+            margin: 0 auto 1.5rem;
+            border: 3px solid var(--surface);
+            box-shadow: 0 0 0 1px var(--border), var(--shadow);
         }
 
-        .oops h1 { font-size: clamp(1.5rem, 4vw, 2.1rem); margin: 0 0 .6rem; }
-        .oops p { color: var(--text-muted); max-width: 46ch; margin: 0 auto 1rem; }
+        /* .oops .oops-code, never .oops-code: the numeral is a <p>, so the
+           `.oops p` rule below outranks a lone class selector and would shrink
+           it back to body size. This exact trap already cost one round.
 
-        /* .oops .oops-code, not .oops-code: the digits are a <p>, so the rule
-           above would otherwise win on specificity and mute them. */
+           background-clip needs a transparent fill, so the colour is declared
+           first as the fallback for anything that ignores it. */
         .oops .oops-code {
-            display: inline-block;
+            margin: 0;
             font-family: var(--font-mono);
-            font-size: .82rem; font-weight: 700;
-            letter-spacing: .22em; text-transform: uppercase;
+            font-size: clamp(5rem, 22vw, 8.5rem);
+            font-weight: 700;
+            line-height: .9;
+            letter-spacing: -.06em;
             color: var(--accent);
-            background: var(--accent-soft);
-            border: 1px solid var(--accent-ring);
-            border-radius: 999px;
-            padding: .3rem 1rem;
-            margin: 0 0 1.4rem;
+            background: linear-gradient(135deg, var(--accent) 15%, var(--accent-strong) 85%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        .oops-links {
-            display: flex; flex-wrap: wrap; gap: .6rem;
-            justify-content: center; margin-top: 2rem;
+        .oops h1 {
+            font-size: clamp(1.15rem, 3.6vw, 1.4rem);
+            margin: 1.1rem 0 .55rem;
+            letter-spacing: -.01em;
         }
-        .oops-links .btn { padding: .55rem 1.1rem; font-size: .9rem; }
-        .oops-home { margin-top: 1.75rem; }
+
+        .oops p {
+            color: var(--text-muted);
+            font-size: .95rem;
+            margin: 0 auto;
+            max-width: 30ch;
+        }
+
+        .oops .btn { margin-top: 1.9rem; }
+
+        @media (prefers-reduced-motion: reduce) {
+            .oops { animation: none; }
+        }
     </style>
 </head>
 <body>
-    <main class="wrap oops">
+    <main class="oops">
         <img class="oops-avatar" src="/assets/imgs/avatar_head.jpg"
              alt="Alessandro Discalzi" width="360" height="360">
 
-        <p class="oops-code">Error 404</p>
+        <p class="oops-code">404</p>
         <h1>This page does not exist</h1>
-        <p>
-            The link may be out of date, or I may have moved something. The whole
-            site lives on a single page, so everything is one click away.
-        </p>
+        <p>The link may be out of date, or I moved something.</p>
 
-        <p class="oops-home">
-            <a class="btn btn-primary" href="/">Back to the site</a>
-        </p>
-
-        <div class="oops-links">
-            <a class="btn btn-outline" href="/#about">About</a>
-            <a class="btn btn-outline" href="/#resume">Resume</a>
-            <a class="btn btn-outline" href="/#projects">Projects</a>
-            <a class="btn btn-outline" href="/#contact">Contact</a>
-            <a class="btn btn-outline" href="/cv.pdf">CV (PDF)</a>
-        </div>
+        <a class="btn btn-primary" href="/">Back to the site</a>
     </main>
 </body>
 </html>
