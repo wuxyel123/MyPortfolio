@@ -62,7 +62,7 @@
         var current = 0;
         var busy = false;
         var pending = 0;             // a move requested while the deck was busy
-        var DURATION = 620;          // must match --slide-dur
+        var DURATION = 300;          // must match --slide-dur
         var EDGE = 2;                // px tolerance when testing inner scroll ends
 
         var reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -149,6 +149,7 @@
         var quietTimer = null;
         var lastEventAt = 0;
         var cooldownUntil = 0;
+        var lastAbs = 0;
 
         function beginGesture(down, canScrollInside) {
             gesture.active = true;
@@ -173,7 +174,14 @@
             // Detecting it purely from delta size (momentum "re-accelerating")
             // misfires on a fast flick, whose deltas are large and noisy — that
             // is what made a quick swipe jump two sections at once.
-            var freshPush = gesture.fired && now >= cooldownUntil && absY >= 40;
+            // Momentum decays, so a genuine second push is not just "big" — it
+            // is much bigger than the tail currently coasting. Comparing
+            // against the previous delta is what separates the two; an
+            // absolute threshold alone cannot, because early momentum from a
+            // hard flick is still large when the short cooldown expires.
+            var freshPush = gesture.fired && now >= cooldownUntil &&
+                            absY >= 40 && absY > lastAbs * 1.8;
+            lastAbs = absY;
 
             if (!gesture.active || gap > 100 || reversed || freshPush) {
                 beginGesture(down, canScrollInside);
@@ -182,6 +190,7 @@
             window.clearTimeout(quietTimer);
             quietTimer = window.setTimeout(function () {
                 gesture.active = false;
+                lastAbs = 0;
             }, 110);
 
             // Once this gesture has already moved the deck, swallow the rest of
@@ -208,7 +217,7 @@
             // cooldownUntil only gates the "fresh push" heuristic above; it no
             // longer blocks input, because blocking silently threw the swipe
             // away instead of acting on it.
-            cooldownUntil = now + 380;
+            cooldownUntil = now + 200;
             step(down ? 1 : -1);
         }, { passive: false });
 

@@ -108,7 +108,7 @@ html {
    The deck tumbles like a die being rolled: the outgoing face pitches away
    on the X axis while the incoming face rolls up into place. */
 /* --slide-dur must match DURATION in main.js */
-:root { --slide-dur: .62s; --slide-ease: cubic-bezier(.22, .75, .28, 1); }
+:root { --slide-dur: .3s; --slide-ease: cubic-bezier(.22, .75, .28, 1); }
 
 @keyframes tumble-in-down {
     from { opacity: 0; transform: translateY(58%) rotateX(-62deg) scale(.84); }

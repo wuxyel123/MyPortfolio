@@ -1,56 +1,55 @@
 name: 🚀 Automatic MyPortfolio Deploy on pull_request or commits
 
 on:
-  pull_request:
-    branches: 
-      - master
-      - main
-    types: [closed]
-    paths-ignore:
-      - '**/.git*'
-      - '**/.git*/**'
-      - '**/OriginalTemplate.zip'
-      - '**/.gitignore'
-      - '**/.DS_Store'
-      - '**/.README.txt'
   push:
-    branches: 
+    branches:
       - master
       - main
-    paths-ignore:
-      - '**/.git*'
-      - '**/.git*/**'
-      - '**/OriginalTemplate.zip'
-      - '**/.gitignore'
-      - '**/.DS_Store'
-      - '**/.README.txt'
-
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   web-deploy:
     name: 🎉 Deploy
     runs-on: ubuntu-latest
     steps:
     - name: 🚚 Get latest code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
+
+    # The FTP action's `exclude` globs were silently ignored — .git/, LICENSE,
+    # README.txt and assets/imgs/_sources/ all reached the server despite being
+    # listed. Assembling an explicit publish directory removes the guesswork:
+    # only what is copied here can possibly be uploaded.
+    - name: 🏗️ Assemble publish directory
+      run: |
+        set -euo pipefail
+        rm -rf _site
+        mkdir -p _site/assets/imgs
+
+        cp index.html .htaccess robots.txt sitemap.xml humans.txt _site/
+        cp -R assets/css _site/assets/
+        cp -R assets/js  _site/assets/
+
+        # only the images the site actually serves — _sources/ stays behind
+        cp assets/imgs/avatar_head.jpg _site/assets/imgs/
+        cp assets/imgs/favicon.png     _site/assets/imgs/
+
+        echo "--- publishing $(find _site -type f | wc -l) files ---"
+        find _site -type f | sort
+        du -sh _site
 
     - name: 📂 Sync files
-      uses: SamKirkland/FTP-Deploy-Action@4.1.0
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.5
       with:
         server: ftp.alessandrodiscalzi.com
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
+        local-dir: ./_site/
         server-dir: /www.alessandrodiscalzi.com/
-        # Setting this replaces the action's defaults, so the .git/node_modules
-        # patterns have to be repeated here.
-        exclude: |
-          **/.git*
-          **/.git*/**
-          **/node_modules/**
-          assets/imgs/_sources/**
-          LICENSE
-          README.txt
-          
+        # ⚠️ ONE-TIME ONLY — REMOVE AFTER THIS DEPLOY SUCCEEDS.
+        # The server's sync-state file referenced directories that no longer
+        # exist, so incremental deploys died on "550 Can't remove directory".
+        # This wipes the web root and re-uploads from scratch, which also
+        # clears the .git/, LICENSE, README.txt and _sources/ that the broken
+        # exclude list had leaked onto the server.
+        dangerous-clean-slate: true

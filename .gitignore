@@ -1,10 +1,9 @@
-.DS_Store
-
-# Private job-search material — must never reach the FTP deploy
-LinkedIn_Job_Search/
-
-# Original vendor template archive, not part of the published site
-OriginalTemplate.zip
 
 # Local dev tooling — everything committed here gets FTP'd to the live site
+# Original vendor template archive, not part of the published site
+# Private job-search material — must never reach the FTP deploy
+.DS_Store
 .claude/
+LinkedIn_Job_Search/
+OriginalTemplate.zip
+_site/
