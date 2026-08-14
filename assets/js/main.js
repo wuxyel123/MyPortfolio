@@ -62,7 +62,7 @@
         var current = 0;
         var busy = false;
         var pending = 0;             // a move requested while the deck was busy
-        var DURATION = 300;          // must match --slide-dur
+        var DURATION = 620;          // must match --slide-dur
         var EDGE = 2;                // px tolerance when testing inner scroll ends
 
         var reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -217,7 +217,7 @@
             // cooldownUntil only gates the "fresh push" heuristic above; it no
             // longer blocks input, because blocking silently threw the swipe
             // away instead of acting on it.
-            cooldownUntil = now + 200;
+            cooldownUntil = now + 380;
             step(down ? 1 : -1);
         }, { passive: false });
 

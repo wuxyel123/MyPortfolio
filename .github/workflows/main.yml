@@ -46,10 +46,8 @@ jobs:
         password: ${{ secrets.FTP_PASSWORD }}
         local-dir: ./_site/
         server-dir: /www.alessandrodiscalzi.com/
-        # ⚠️ ONE-TIME ONLY — REMOVE AFTER THIS DEPLOY SUCCEEDS.
-        # The server's sync-state file referenced directories that no longer
-        # exist, so incremental deploys died on "550 Can't remove directory".
-        # This wipes the web root and re-uploads from scratch, which also
-        # clears the .git/, LICENSE, README.txt and _sources/ that the broken
-        # exclude list had leaked onto the server.
-        dangerous-clean-slate: true
+        # dangerous-clean-slate was enabled for exactly one run (1ab489d) to
+        # reset a corrupt server sync-state and clear files a broken exclude
+        # list had leaked. It is deliberately gone again: left on, every deploy
+        # would wipe the whole site first, taking it offline for minutes and
+        # turning any mid-run failure into a dead site.
